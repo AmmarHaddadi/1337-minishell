@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "parsing/parsing.h"
 
 enum red_mode {
 	over_ride, // >
@@ -14,11 +15,11 @@ enum red_mode {
 	red_in,     // <
     red_heredoc, // <<
 	no
-};
+} t_red_mode;
 
 typedef struct s_redir {
     char *filename;      // f1, f2, f3...
-    enum red_mode red_mode;  // > || < || >> || <<
+    enum red_mode red_mode ;  // > || < || >> || <<
     struct s_redir *next;
 } t_redir;
 
@@ -28,6 +29,7 @@ typedef struct s_command {
 	struct s_command
 		*next; // Pointer to the next command (for pipes), NULL if not
 } t_command;
+
 
 #endif
 
