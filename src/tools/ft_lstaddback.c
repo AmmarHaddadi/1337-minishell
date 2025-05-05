@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
+/*   ft_lstaddback.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 18:26:50 by ahaddadi          #+#    #+#             */
-/*   Updated: 2025/05/04 15:26:08 by ssallami         ###   ########.fr       */
+/*   Created: 2025/05/04 15:26:22 by ssallami          #+#    #+#             */
+/*   Updated: 2025/05/04 15:27:11 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../main.h"
 
-t_list	*ft_lstlast(t_list *lst)
+t_token	*ft_lstlast2(t_token *lst)
 {
 	if (!lst)
 		return (NULL);
@@ -20,4 +20,3 @@ t_list	*ft_lstlast(t_list *lst)
 		lst = lst->next;
 	return (lst);
 }
-	

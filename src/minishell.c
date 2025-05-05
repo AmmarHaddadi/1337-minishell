@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:32:36 by ssallami          #+#    #+#             */
-/*   Updated: 2025/04/30 18:34:26 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/05/04 15:45:25 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int main(void)
         // lexer
         t_token *tks = tokens(input);
         (void)tks;
-
+        
         // t_cmd *cmds = parser(tks);
         
         // execute_commands(cmds);

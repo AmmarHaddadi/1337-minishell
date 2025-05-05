@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:56:24 by ssallami          #+#    #+#             */
-/*   Updated: 2025/04/30 20:56:34 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/05/04 15:38:15 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,10 @@ static char	*ft_strncpy(char *s1, char *s2, int n)
 	return (s1);
 }
 
-static int	check_allspace(char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] != ' ' && s[i] != '\t')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 static void	len_word(char *str, int *i, int *j)
 {
 	char	quote;
+	int		k;
 
 	if (str[*i] == '>' || str[*i] == '<' || str[*i] == '|' || str[*i] == '"'
 		|| str[*i] == '\'' || str[*i] == '=')
@@ -54,8 +41,11 @@ static void	len_word(char *str, int *i, int *j)
 			quote = str[*i];
 			(*i)++;
 			(*j)++;
+			k = *i;
 			while (str[*i] && str[*i] != quote)
 				(*i)++;
+			if (str[*i] != quote)
+				*i = k;
 		}
 		else
 			(*i)++;
@@ -74,6 +64,7 @@ t_token	*ft_split_lexer(char *str)
 	int		i;
 	int		j;
 	t_token	*head;
+	t_token	*last;
 	char	*word;
 
 	head = NULL;
@@ -85,14 +76,38 @@ t_token	*ft_split_lexer(char *str)
 			i++;
 		j = i;
 		len_word(str, &i, &j);
-		if (i > j)
+		if (i >= j)
 		{
 			word = (char *)malloc(sizeof(char) * ((i - j) + 1));
 			ft_strncpy(word, &str[j], i - j);
-			if(  str[i - j + 1] == '"' ||  str[i - j + 1] == '\'')
+			// check no value insinde in singel quote or double quote ( '' / "" )
+			if (i == j && str[i] == '"' && str[j - 1] == '"')
+				ft_lstadd_back(&head, ft_lstnew("\"\""));
+			else if (i == j && str[i] == '\'' && str[j - 1] == '\'')
+				ft_lstadd_back(&head, ft_lstnew("''"));
+			else
+			{
+				// check is no equivalent for singel quote or double quote ( '' / "" )
+				if (i == j && str[i-1] == '"')
+					ft_lstadd_back(&head, ft_lstnew("\""));
+				else if (i == j && str[i-1] == '\'')
+					ft_lstadd_back(&head, ft_lstnew("'"));
+				else if (i != j)
+					ft_lstadd_back(&head, ft_lstnew(word));
+			}
+			// skip " or ' if it was lsat word " or '
+			if (str[i] == '"' || str[i] == '\'')
 				i++;
-			if (check_allspace(word) != 0)
-				ft_lstadd_back(&head, ft_lstnew(word));
+			if (str[i] && str[i] == ' ')
+			{
+				last = ft_lstlast2(head);
+				last->has_space = 1;
+			}
+			else
+			{
+				last = ft_lstlast2(head);
+				last->has_space = 0;
+			}
 		}
 	}
 	return (head);
