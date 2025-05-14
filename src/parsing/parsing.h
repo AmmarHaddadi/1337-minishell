@@ -1,6 +1,7 @@
 #ifndef PARSING_H
 # define PARSING_H
 
+
 typedef enum e_token_type
 {
 	TOKEN_WORD,
@@ -23,5 +24,6 @@ t_token				*tokens(char *input);
 t_token				*ft_split_lexer(char *str);
 void				ft_lstadd_back(t_token **lst, t_token *new);
 t_token				*ft_lstnew(void *content);
+int	ft_lstsize_token(t_token *lst);
 
 #endif

@@ -1,4 +1,4 @@
-SRC = src/minishell.c src/parsing/tokens.c src/tools/ft_lstnew.c src/tools/ft_lstadd_back.c src/tools/ft_lstaddback.c  src/tools/ft_split_lexer.c
+SRC = src/minishell.c src/parsing/tokens.c src/parsing/push_struct.c src/tools/ft_lstnew.c src/tools/ft_lstadd_back.c src/tools/ft_lstaddback.c  src/tools/ft_split_lexer.c src/tools/ft_lstsize.c
 
 CFLAGS = -Wall -Wextra -Werror -I/Users/ssallami/.brew/opt/readline/include
 

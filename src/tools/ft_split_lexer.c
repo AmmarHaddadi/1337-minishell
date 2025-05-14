@@ -6,25 +6,25 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:56:24 by ssallami          #+#    #+#             */
-/*   Updated: 2025/05/04 15:38:15 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/05/14 18:39:14 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
 
-static char	*ft_strncpy(char *s1, char *s2, int n)
-{
-	int	i;
+// static char	*ft_strncpy(char *s1, char *s2, int n)
+// {
+// 	int	i;
 
-	i = 0;
-	while (s2 && i < n)
-	{
-		s1[i] = s2[i];
-		i++;
-	}
-	s1[i] = '\0';
-	return (s1);
-}
+// 	i = 0;
+// 	while (s2 && i < n)
+// 	{
+// 		s1[i] = s2[i];
+// 		i++;
+// 	}
+// 	s1[i] = '\0';
+// 	return (s1);
+// }
 
 static void	len_word(char *str, int *i, int *j)
 {
@@ -80,23 +80,25 @@ t_token	*ft_split_lexer(char *str)
 		{
 			word = (char *)malloc(sizeof(char) * ((i - j) + 1));
 			ft_strncpy(word, &str[j], i - j);
-			// check no value insinde in singel quote or double quote ( '' / "" )
+
+			// check no value insinde in singel quote or double quote ( '' | "" )
 			if (i == j && str[i] == '"' && str[j - 1] == '"')
 				ft_lstadd_back(&head, ft_lstnew("\"\""));
 			else if (i == j && str[i] == '\'' && str[j - 1] == '\'')
 				ft_lstadd_back(&head, ft_lstnew("''"));
 			else
 			{
-				// check is no equivalent for singel quote or double quote ( '' / "" )
-				if (i == j && str[i-1] == '"')
+				// check is no equivalent for singel quote or double quote ( '' | "" )
+				if (i == j && str[i - 1] == '"')
 					ft_lstadd_back(&head, ft_lstnew("\""));
-				else if (i == j && str[i-1] == '\'')
+				else if (i == j && str[i - 1] == '\'')
 					ft_lstadd_back(&head, ft_lstnew("'"));
 				else if (i != j)
 					ft_lstadd_back(&head, ft_lstnew(word));
 			}
 			// skip " or ' if it was lsat word " or '
-			if (str[i] == '"' || str[i] == '\'')
+			if ((str[i] == '"' && str[j - 1] == '"') || (str[i] == '\'' && str[j
+					- 1] == '\''))
 				i++;
 			if (str[i] && str[i] == ' ')
 			{
