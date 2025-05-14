@@ -1,78 +1,46 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-
-#include <signal.h>
-#include <stdlib.h>
+#include "builtins/builtins.h"
+#include "execution/execution.h"
+#include "libft/libft.h"
 #include <stdio.h>
-#include <readline/readline.h>
 #include <readline/history.h>
+#include <readline/readline.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+typedef struct s_shellvar {
+	char *key;
+	char *value;
+	bool exported; // if true pass to execve
+	struct s_shellvar *next;
+} t_shellvar;
 
 enum red_mode {
-	over_ride, // >
+	override, // >
 	append,	  // >>
-	red_in,     // <
-    red_heredoc, // <<
-	no
-};
+	in,		  // <
+	none	  // no red
+} t_red_mode;
 
 typedef struct s_redir {
-    char *filename;      // f1, f2, f3...
-    enum red_mode red_mode;  // > || < || >> || <<
-    struct s_redir *next;
+	char *filename; // filename || NULL
+	enum red_mode red_mode;
+	struct s_redir *next; // for multiple redirs like >f1 >f2
 } t_redir;
 
 typedef struct s_command {
-	char **args;			// Array of arguments ({"echo", NULL}) 
-	t_redir *redirections; 
-	struct s_command
-		*next; // Pointer to the next command (for pipes), NULL if not
+	char **args; // array of args ({"ls", "-l", NULL})
+	t_redir *redirections;
+	struct s_command *next; // Next command (pipes) || NULL
 } t_command;
 
+// utils
+int my_strcmp(const char *s1, const char *s2);
+int matrixlen(char **matrix);
+void freematrix(char **m);
+char *triplejoin(char *a, char *b, char *c);
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// echo "abc" > f1 > f2 >> f3
-
-// typedef struct s_file {
-//     char            *name;
-//     int                type;
-//     struct s_file*    next;
-// }t_file;
-
-// typedef struct s_env {
-//     char            *name;
-//     char            *value;
-//     struct s_env    *next;
-// }t_env;
-
-// typedef struct s_cmd {
-//     char            **args; // Array of arguments ({"echo", NULL}) 
-//     char            **file; // Array of arguments ({"f1", NULL}) 
-//     struct s_cmd    *next;
-// }t_cmd;
-
-// typedef struct s_command
-// {
-//     t_env*            env;
-//     t_cmd*            cmd;
-//     unsigned char exit_status;
-// };
