@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 12:43:35 by ssallami          #+#    #+#             */
-/*   Updated: 2025/05/14 18:47:11 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/05/16 12:03:34 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_token	*join_token_word(t_token *tokens)
 		tmp = ft_lstnew(joined);
 		if (!tmp)
 			return (NULL);
-		tmp->type = TOKEN_WORD;
+		tmp->type = tokens->type;
 		ft_lstadd_back(&new_tkn, tmp);
 		tokens = tokens->next;
 	}
@@ -84,7 +84,7 @@ t_token	*tokens(char *input)
 	t_token	*lexer;
 	t_token	*tokens;
 	t_token	*handle_tokens;
-	t_token	*tmp;
+	// t_token	*tmp;
 
 	lexer = ft_split_lexer(input);
 	tokens = typ_token(lexer);
@@ -93,22 +93,24 @@ t_token	*tokens(char *input)
 		printf("minishell: no equivalent for singel quote (') or double quote (\")\n");
 		return (0);
 	}
-	tmp = tokens;
-	while (tmp != NULL)
-	{
-		printf("[ %3s ]  -- has space: %3d -- type: %3d\n", tmp->value,
-			tmp->has_space, tmp->type);
-		tmp = tmp->next;
-	}
-	printf("NULL\n");
+	// tmp = tokens;
+	// while (tmp != NULL)
+	// {
+	// 	printf("[ %3s ]  -- has space: %3d -- type: %3d\n", tmp->value,
+	// 		tmp->has_space, tmp->type);
+	// 	tmp = tmp->next;
+	// }
+	// printf("NULL\n");
 	handle_tokens = join_token_word(tokens);
-	while (handle_tokens != NULL)
-	{
-		printf("[ %3s ]  -- has space: %3d -- type: %3d\n",
-			handle_tokens->value, handle_tokens->has_space,
-			handle_tokens->type);
-		handle_tokens = handle_tokens->next;
-	}
-	printf("NULL\n");
-	return (tokens);
+	// tmp = handle_tokens;
+	
+	// while (tmp != NULL)
+	// {
+	// 	printf("[ %3s ]  -- has space: %3d -- type: %3d\n",
+	// 		tmp->value, tmp->has_space,
+	// 		tmp->type);
+	// 	tmp = tmp->next;
+	// }
+	// printf("NULL\n");
+	return (handle_tokens);
 }
