@@ -19,8 +19,9 @@ int matrixlen(char **matrix) {
 }
 
 void freematrix(char **m) {
-	while (*m != NULL)
-		free(*m++);
+	int i = 0;
+	while (m[i] != NULL)
+		free(m[i++]);
 	free(m);
 }
 

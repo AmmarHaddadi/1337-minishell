@@ -1,4 +1,5 @@
 #include "../main.h"
+#include <stdio.h>
 
 void bubble_sort_shellvars(t_shellvar *head) {
 	if (!head)
@@ -36,14 +37,3 @@ void bubble_sort_shellvars(t_shellvar *head) {
 	}
 }
 
-// appends env to vars 
-void append_envs(char **env, t_shellvar *vars) {
-	if (!env || !*env)
-		return;
-	int i = 0;
-	while (env[i] != NULL) {
-		char **s = ft_split(env[i], '=');
-		updatevar(env[0], env[1], vars, true);
-		i++;
-	}
-}

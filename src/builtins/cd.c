@@ -6,7 +6,7 @@
 	reimplementing a Bash bug disguised as a "feature" is dumb
  */
 
-int cd(t_command *command) {
+int cd(t_command *command, char *home) {
 	// too much args
 	if (matrixlen(command->args) > 2) {
 		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
@@ -14,9 +14,9 @@ int cd(t_command *command) {
 	}
 	// `cd`
 	if (matrixlen(command->args) == 1) {
-		if (!getenv("HOME"))
+		if (!home)
 			return (ft_putstr_fd("cd: $HOME not set\n", STDERR_FILENO), 1);
-		if (chdir(getenv("HOME")) != 0) {
+		if (chdir(home) != 0) {
 			perror("cd");
 			return 1;
 		}
