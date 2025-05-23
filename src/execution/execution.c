@@ -51,6 +51,8 @@ int execute(t_command *cmd, t_shellvar *vars) {
 	if (pid == -1)
 		return (perror("could't fork"), free(path), -1);
 	if (pid == 0) {
+		if (!setupfd(cmd->redirections))
+			exit(1);
 		char **env = varstomatrix(vars);
 		execve(path, cmd->args, env);
 		perror("command failed");
