@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 typedef struct s_shellvar {
 	char *key;
@@ -23,7 +24,6 @@ enum red_mode {
 	override, // >
 	append,	  // >>
 	in,		  // <
-	none	  // no red
 } t_red_mode;
 
 typedef struct s_redir {

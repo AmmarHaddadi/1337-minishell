@@ -4,7 +4,7 @@
 int env(t_shellvar *vars) {
 	while (vars != NULL) {
 		if (vars->exported == true && vars->value != NULL)
-			printf("%s=%s", vars->key, vars->value);
+			printf("%s=%s\n", vars->key, vars->value);
 		vars = vars->next;
 	}
 	return 0;

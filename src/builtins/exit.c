@@ -13,7 +13,7 @@ int builtin_exit(t_command *cmd) {
 	}
 	// first char not +- or 0-9
 	if (!ft_isdigit(cmd->args[1][0]) && cmd->args[1][0] != '+' &&
-		cmd->args[1][0] != '=')
+		cmd->args[1][0] != '-')
 		return (255);
 	return ft_atoi(cmd->args[1]) % 255;
 }

@@ -14,8 +14,12 @@ int echo(t_command *command) {
 	int i = 1;
 	bool n = nflag(command->args);
 	while (command->args[i] != NULL) {
-		if (my_strcmp(command->args[i], "-n"))
-			printf("%s", command->args[i]);
+		if (my_strcmp(command->args[i], "-n")) {
+			if (!command->args[i + 1])
+				printf("%s", command->args[i]);
+			else
+				printf("%s ", command->args[i]);
+		}
 		i++;
 	}
 	if (!n)
