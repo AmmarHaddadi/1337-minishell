@@ -6,12 +6,11 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 12:43:35 by ssallami          #+#    #+#             */
-/*   Updated: 2025/05/16 12:03:34 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:24:13 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
-#include "parsing.h"
 
 static t_token	*typ_token(t_token *lexer)
 {
@@ -46,8 +45,7 @@ static t_token	*join_token_word(t_token *tokens)
 	new_tkn = NULL;
 	while (tokens != NULL)
 	{
-		joined = ft_strdup(tokens->value);
-		if (!joined)
+		if (!(joined = ft_strdup(tokens->value)))
 			return (NULL);
 		while (tokens->next && tokens->has_space == 0
 			&& tokens->next->type == TOKEN_WORD && tokens->type == TOKEN_WORD)
@@ -57,7 +55,7 @@ static t_token	*join_token_word(t_token *tokens)
 				return (NULL);
 			tokens = tokens->next;
 		}
-		tmp = ft_lstnew(joined);
+		tmp = ft_lstnew_token(joined);
 		if (!tmp)
 			return (NULL);
 		tmp->type = tokens->type;
@@ -79,31 +77,54 @@ static int	quote_check(t_token *lexer)
 	return (0);
 }
 
+static int	pipes_check(t_token *token)
+{
+	if (token && ft_strcmp(token->value, "|") == 0)
+		return (1);
+	while (token != NULL)
+	{
+		if (token->next != NULL && ft_strcmp(token->value, "|") == 0
+			&& ft_strcmp(token->next->value, "|") == 0)
+			return (1);
+		if (ft_strcmp(token->value, "|") == 0 && token->next == NULL)
+			return (1);
+		token = token->next;
+	}
+	return (0);
+}
+
 t_token	*tokens(char *input)
 {
 	t_token	*lexer;
 	t_token	*tokens;
 	t_token	*handle_tokens;
-	// t_token	*tmp;
 
+	t_token	*tmp;
 	lexer = ft_split_lexer(input);
 	tokens = typ_token(lexer);
+	
 	if (quote_check(tokens))
 	{
 		printf("minishell: no equivalent for singel quote (') or double quote (\")\n");
 		return (0);
 	}
-	// tmp = tokens;
-	// while (tmp != NULL)
-	// {
-	// 	printf("[ %3s ]  -- has space: %3d -- type: %3d\n", tmp->value,
-	// 		tmp->has_space, tmp->type);
-	// 	tmp = tmp->next;
-	// }
-	// printf("NULL\n");
+	// print
+	tmp = tokens;
+	while (tmp != NULL)
+	{
+		printf("[ %3s ]  -- has space: %3d -- type: %3d\n",
+			tmp->value,tmp->has_space, tmp->type);
+				tmp = tmp->next;
+			}
+			printf("NULL\n");
 	handle_tokens = join_token_word(tokens);
+	if (pipes_check(handle_tokens))
+	{
+		printf("minishell: syntax error near unexpected token  '|'\n");
+		return (0);
+	}
+	// print
 	// tmp = handle_tokens;
-	
 	// while (tmp != NULL)
 	// {
 	// 	printf("[ %3s ]  -- has space: %3d -- type: %3d\n",

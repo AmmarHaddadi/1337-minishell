@@ -6,25 +6,11 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:56:24 by ssallami          #+#    #+#             */
-/*   Updated: 2025/05/14 18:39:14 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/05/22 20:31:43 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
-
-// static char	*ft_strncpy(char *s1, char *s2, int n)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (s2 && i < n)
-// 	{
-// 		s1[i] = s2[i];
-// 		i++;
-// 	}
-// 	s1[i] = '\0';
-// 	return (s1);
-// }
 
 static void	len_word(char *str, int *i, int *j)
 {
@@ -34,7 +20,8 @@ static void	len_word(char *str, int *i, int *j)
 	if (str[*i] == '>' || str[*i] == '<' || str[*i] == '|' || str[*i] == '"'
 		|| str[*i] == '\'' || str[*i] == '=')
 	{
-		if (str[*i + 1] == '>' || str[*i + 1] == '<')
+		if (((str[*i + 1] == '>' && str[*i] == '>') || (str[*i + 1] == '<'
+					&& str[*i] == '<')) && str[*i] != '|')
 			*i += 2;
 		else if (str[*i] == '"' || str[*i] == '\'')
 		{
@@ -78,36 +65,32 @@ t_token	*ft_split_lexer(char *str)
 		len_word(str, &i, &j);
 		if (i >= j)
 		{
-			word = (char *)malloc(sizeof(char) * ((i - j) + 1));
-			ft_strncpy(word, &str[j], i - j);
-
+			word = ft_substr(str, j, i - j);
 			// check no value insinde in singel quote or double quote ( '' | "" )
-			if (i == j && str[i] == '"' && str[j - 1] == '"')
-				ft_lstadd_back(&head, ft_lstnew("\"\""));
-			else if (i == j && str[i] == '\'' && str[j - 1] == '\'')
-				ft_lstadd_back(&head, ft_lstnew("''"));
+			if ((i == j && str[i] == '"' && str[j - 1] == '"') || (i == j
+					&& str[i] == '\'' && str[j - 1] == '\''))
+				ft_lstadd_back(&head, ft_lstnew_token(ft_strdup("")));
 			else
 			{
 				// check is no equivalent for singel quote or double quote ( '' | "" )
 				if (i == j && str[i - 1] == '"')
-					ft_lstadd_back(&head, ft_lstnew("\""));
+					ft_lstadd_back(&head, ft_lstnew_token(ft_strdup("\"")));
 				else if (i == j && str[i - 1] == '\'')
-					ft_lstadd_back(&head, ft_lstnew("'"));
+					ft_lstadd_back(&head, ft_lstnew_token(ft_strdup("'")));
 				else if (i != j)
-					ft_lstadd_back(&head, ft_lstnew(word));
+					ft_lstadd_back(&head, ft_lstnew_token(ft_strdup(word)));
 			}
 			// skip " or ' if it was lsat word " or '
-			if ((str[i] == '"' && str[j - 1] == '"') || (str[i] == '\'' && str[j
-					- 1] == '\''))
+			if ((str[i] == '"' && str[j - 1] == '"') || (str[i] == '\'' && str[j - 1] == '\''))
 				i++;
 			if (str[i] && str[i] == ' ')
 			{
-				last = ft_lstlast2(head);
+				last = ft_lstlast(head);
 				last->has_space = 1;
 			}
 			else
 			{
-				last = ft_lstlast2(head);
+				last = ft_lstlast(head);
 				last->has_space = 0;
 			}
 		}

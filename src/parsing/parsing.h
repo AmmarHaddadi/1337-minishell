@@ -23,7 +23,8 @@ typedef struct s_token
 t_token				*tokens(char *input);
 t_token				*ft_split_lexer(char *str);
 void				ft_lstadd_back(t_token **lst, t_token *new);
-t_token				*ft_lstnew(void *content);
-int	ft_lstsize_token(t_token *lst);
+t_token				*ft_lstnew_token(void *content);
+t_token				*ft_lstnew_token_add_mode(void *file, int mode);
+int					ft_lstsize_token(t_token *lst);
 
 #endif

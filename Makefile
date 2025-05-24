@@ -1,4 +1,4 @@
-SRC = src/minishell.c src/parsing/tokens.c src/parsing/push_struct.c src/tools/ft_lstnew.c src/tools/ft_lstadd_back.c src/tools/ft_lstaddback.c  src/tools/ft_split_lexer.c src/tools/ft_lstsize.c
+SRC = src/parsing/split_commands.c src/minishell.c src/parsing/tokens.c src/parsing/push_struct.c src/tools/ft_lstnew.c src/tools/ft_lstadd_back.c src/tools/ft_lstlast.c  src/parsing/ft_split_lexer.c src/tools/ft_lstsize.c
 
 CFLAGS = -Wall -Wextra -Werror -I/Users/ssallami/.brew/opt/readline/include
 
@@ -13,8 +13,7 @@ NAME = minishell
 OBJS = ${SRC:.c=.o}
 
 all: ${OBJS}
-	@make -C src/libft
-	@make bonus -C src/libft
+	@make re -C src/libft
 	${CC} ${CFLAGS} ${OBJS} src/libft/libft.a  -o ${NAME} ${LDFLAGS}
 
 %.o : %.c src/minishell.h src/parsing/parsing.h

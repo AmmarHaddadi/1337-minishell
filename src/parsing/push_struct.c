@@ -1,7 +1,6 @@
 
 
 #include "../main.h"
-#include "parsing.h"
 
 static int	count_files(t_token *tokens)
 {
@@ -53,35 +52,6 @@ static t_token	*search_mode(t_token *tokens)
 	return (tokens);
 }
 
-t_redir	*ft_lstnew_redir(void *file, int mode)
-{
-	t_redir	*node;
-
-	node = (t_redir *)malloc(sizeof(t_redir));
-	if (!node)
-		return (NULL);
-	node->filename = ft_strdup(file);
-	node->red_mode = mode;
-	node->next = NULL;
-	return (node);
-}
-void	ft_lstadd_back_redir(t_redir **lst, t_redir *new)
-{
-	t_redir	*ptr;
-
-	if (!new)
-		return ;
-	if (!*lst)
-	{
-		*lst = new;
-		return ;
-	}
-	ptr = *lst;
-	while (ptr->next != NULL)
-		ptr = ptr->next;
-	ptr->next = new;
-}
-
 t_command	*push_struct(t_token *tokens)
 {
 	t_command *cmd = malloc(sizeof(t_command));
@@ -97,10 +67,8 @@ t_command	*push_struct(t_token *tokens)
 	// 1 . count files
 	int countFiles = count_files(tokens);
 	int countOperator = count_operator(tokens);
-	// printf("count_files = %d  | count_operator = %d | words = %d\n", countFiles,
-	// 	countOperator, ft_lstsize_token(tokens) - (countFiles + countOperator));
 
-	// 3 . while -> push *filename | red_mode
+	// 2 . while -> push *filename | red_mode
 	t_token *tkn;
 	while (tokens != NULL)
 	{
@@ -110,8 +78,7 @@ t_command	*push_struct(t_token *tokens)
 
 		if (tkn->next != NULL)
 		{
-			ft_lstadd_back_redir(&cmd->redirections,
-				ft_lstnew_redir(tkn->next->value, tkn->type));
+			ft_lstadd_back_redir(&cmd->redirections,ft_lstnew_redir(tkn->next->value, tkn->type));
 			tkn->type = 10;
 			tkn->next->type = 10;
 			tokens = tkn->next->next;
