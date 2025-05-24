@@ -1,33 +1,11 @@
 #include "main.h"
 
-void sigint_handler(int signum)
-{
-    (void)signum;
-    printf("\nexit\n");
-    exit(0);
-}
+int main(int ac, char **av, char **env) {
+	(void)ac;
+	(void)av;
 
-int main(void)
-{
-    signal(SIGINT, sigint_handler); // Ctrl+C
-    char *input;
+	// char *input;
+	int exit_code = 0;
+	t_shellvar *vars = envtoll(env);
 
-    while (1)
-    {
-        input = readline("minishell$ ");
-        if (!input)
-        {
-            printf("exit\n");
-            break;
-        }
-
-        // lexer → parser → execution
-        // t_token *tokens = lexer(input);
-        // t_cmd *cmds = parser(tokens);
-        // execute_commands(cmds);
-
-        free(input);
-    }
-
-    return 0;
 }
