@@ -33,11 +33,15 @@ typedef struct s_command
 		// Pointer to the next command (for pipes),NULL if not
 }					t_command;
 
+// utils
 t_token				*ft_lstlast(t_token *lst);
 t_command			*push_struct(t_token *tokens);
 t_redir				*ft_lstnew_redir(void *file, int mode);
 void				ft_lstadd_back_redir(t_redir **lst, t_redir *new);
 void				ft_lstadd_back_cmd(t_command **lst, t_command *new);
 t_command			*split_commands_tokens(t_token *tks);
+void	sigint_handler(int signum);
+int	check_space_newline(char *input);
+
 
 #endif
