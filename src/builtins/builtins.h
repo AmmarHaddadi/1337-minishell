@@ -7,7 +7,7 @@ int echo(t_command *command);
 int cd(t_command *command, char *home);
 int pwd();
 int export(t_shellvar *vars, t_command *command);
-int unset(t_command *command, t_shellvar *vars);
+int unset(t_command *command, t_shellvar **vars);
 int env(t_shellvar *vars);
 int builtin_exit(t_command *cmd);
 

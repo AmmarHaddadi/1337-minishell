@@ -1,22 +1,21 @@
 #include "../main.h"
 
-void	sigint_handler(int signum)
-{
+void sigint_handler(int signum) {
 	(void)signum;
 	printf("\nexit\n");
 	exit(0);
 }
 
-
-int	check_space_newline(char *input)
-{
-	int	i;
+// check if all is white spaces
+bool all_whitespace(char *input) {
+	if (!*input)
+		return true;
+	int i;
 	i = 0;
-	while (input[i])
-	{
+	while (input[i]) {
 		if (input[i] != ' ' && input[i] != '\n')
-			return (0);
+			return (false);
 		i++;
 	}
-	return (1);
+	return (true);
 }
