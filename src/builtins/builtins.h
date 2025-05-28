@@ -17,3 +17,4 @@ int updatevar(char *key, char *val, t_shellvar *vars, bool exported);
 t_shellvar *envtoll(char **env);
 char **varstomatrix(t_shellvar *vars);
 char *getvar(char *key, t_shellvar *vars);
+void freeenv(t_shellvar *vars);

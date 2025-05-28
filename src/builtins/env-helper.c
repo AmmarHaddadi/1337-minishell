@@ -32,3 +32,15 @@ char *getvar(char *key, t_shellvar *vars) {
 	}
 	return NULL;
 }
+
+void freeenv(t_shellvar *vars) {
+	t_shellvar *next;
+	t_shellvar *curr = vars;
+	while (curr) {
+		next = curr->next;
+		free(curr->key);
+		free(curr->value);
+		free(curr);
+		curr = next;
+	}
+}
