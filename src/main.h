@@ -2,8 +2,10 @@
 #define MAIN_H
 
 #include "builtins/builtins.h"
+#include "execution/execution.h"
 #include "libft/libft.h"
-# include "parsing/parsing.h"
+#include "parsing/parsing.h"
+#include <fcntl.h>
 #include <stdio.h>
 #include <readline/history.h>
 #include <readline/readline.h>
@@ -11,7 +13,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
+#include <sys/wait.h>
 
 typedef struct s_shellvar {
 	char *key;
@@ -20,11 +22,11 @@ typedef struct s_shellvar {
 	struct s_shellvar *next;
 } t_shellvar;
 
-enum red_mode {
+typedef enum red_mode {
 	override,
 	append,
 	in,
-} t_red_mode;
+} t_red_mode ;
 
 typedef struct s_redir {
 	char *filename;

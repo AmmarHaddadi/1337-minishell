@@ -38,49 +38,71 @@ bool setupfd(t_redir *red) {
 	}
 
 	// findig last out redir and it's mode
-	char *rfile = NULL;
+	char *redfile = NULL;
 	redir = red; // used for looping
 	int outmode;
 	while (redir != NULL) {
 		if (redir->red_mode == override) {
-			rfile = redir->filename;
+			redfile = redir->filename;
 			outmode = O_TRUNC;
 		} else if (redir->red_mode == append) {
-			rfile = redir->filename;
+			redfile = redir->filename;
 			outmode = O_APPEND;
 		}
 		redir = redir->next;
 	}
 
-	// changing the out
-	int ofd = open(rfile, outmode | O_WRONLY, 0644);
-	if (ofd < 0)
-		return (perror("Can't open output file"), false);
-	int d = dup2(ofd, STDOUT_FILENO);
-	if (d < 0)
-		return (perror("Can't forward output to file"), close(ofd), false);
+	// changing the out if needed
+	int ofd;
+	if (redfile) {
+		ofd = open(redfile, outmode | O_WRONLY, 0644);
+		if (ofd < 0)
+			return (perror("Can't open output file"), false);
+		if (dup2(ofd, STDOUT_FILENO) < 0)
+			return (perror("Can't forward output to file"), close(ofd), false);
+	}
 
 	// changing the in
 	redir = red; // used for looping
-	rfile = NULL;
+	redfile = NULL;
 	while (redir != NULL) {
 		if (redir->red_mode == in) {
-			rfile = redir->filename;
+			redfile = redir->filename;
 			break;
 		}
 		redir = redir->next;
 	}
 
 	// no in file found
-	if (!rfile)
+	if (!redfile)
 		return true;
 
 	// changing the in
-	int ifd = open(rfile, O_RDONLY);
+	int ifd = open(redfile, O_RDONLY);
 	if (ifd < 0)
 		return (perror("Can't open output file"), close(ofd), false);
-	d = dup2(ifd, STDIN_FILENO);
-	if (d < 0)
+	if (dup2(ifd, STDIN_FILENO) < 0)
 		return (perror("Can't read input"), close(ofd), close(ifd), false);
 	return true;
+}
+
+static void freeredirs(t_redir *red) {
+	t_redir *prvs;
+	while (red != NULL) {
+		prvs = red;
+		red = red->next;
+		free(prvs->filename);
+		free(prvs);
+	}
+}
+
+void freecmd(t_command *cmd) {
+	t_command *prvs;
+	while (cmd != NULL) {
+		prvs = cmd;
+		cmd = cmd->next;
+		freematrix(prvs->args);
+		freeredirs(prvs->redirections);
+		free(prvs);
+	}
 }
