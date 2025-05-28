@@ -1,28 +1,19 @@
 #include "../main.h"
 
-static bool nflag(char **arr) {
+int echo(t_command *cmd) {
+	if (matrixlen(cmd->args) < 2)
+		return 0;
 	int i = 1;
-	while (arr[i] != NULL) {
-		if (!my_strcmp(arr[i], "-n"))
-			return true;
+	int n = my_strcmp(cmd->args[1], "-n");
+	if (n == 0)
+		i += 1;
+	while (cmd->args[i]) {
+		ft_putstr_fd(cmd->args[i], STDOUT_FILENO);
+		if (cmd->args[i + 1])
+			ft_putstr_fd(" ", STDOUT_FILENO);
 		i++;
 	}
-	return false;
-}
-
-int echo(t_command *command) {
-	int i = 1;
-	bool n = nflag(command->args);
-	while (command->args[i] != NULL) {
-		if (my_strcmp(command->args[i], "-n")) {
-			if (!command->args[i + 1])
-				printf("%s", command->args[i]);
-			else
-				printf("%s ", command->args[i]);
-		}
-		i++;
-	}
-	if (!n)
+	if (n != 0)
 		write(1, "\n", 1);
 	return 0;
 }

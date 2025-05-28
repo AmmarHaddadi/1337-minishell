@@ -1,5 +1,4 @@
 #include "../main.h"
-#include <string.h>
 
 // TODO if malloc fails free previous shit and return NULL
 t_shellvar *envtoll(char **env) {
@@ -9,8 +8,8 @@ t_shellvar *envtoll(char **env) {
 	t_shellvar *curr = head;
 	for (int i = 0; env[i]; i++) {
 		char **s = ft_split(env[i], '=');
-		curr->key = strdup(s[0]);
-		curr->value = strdup(s[1]);
+		curr->key = ft_strdup(s[0]);
+		curr->value = ft_strdup(s[1]);
 		curr->exported = true;
 		if (env[i + 1] == NULL)
 			curr->next = NULL;

@@ -3,8 +3,12 @@
 // HINT prints exported vars that have a value
 int env(t_shellvar *vars) {
 	while (vars != NULL) {
-		if (vars->exported == true && vars->value != NULL)
-			printf("%s=%s\n", vars->key, vars->value);
+		if (vars->exported == true && vars->value != NULL) {
+			ft_putstr_fd(vars->key, STDOUT_FILENO);
+			ft_putstr_fd("=", STDOUT_FILENO);
+			ft_putstr_fd(vars->value, STDOUT_FILENO);
+			ft_putstr_fd("\n", STDOUT_FILENO);
+		}
 		vars = vars->next;
 	}
 	return 0;
