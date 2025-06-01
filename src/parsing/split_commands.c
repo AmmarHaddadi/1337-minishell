@@ -33,7 +33,9 @@ static t_token *search_mode(t_token *tokens) {
 	return (tokens);
 }
 
-t_command *split_commands_tokens(char *input) {
+
+
+t_command *split_commands_tokens(char *input , t_shellvar *vars) {
 	t_command *cmds;
 	t_token *pipe;
 	t_command *get_new_cmd;
@@ -41,7 +43,8 @@ t_command *split_commands_tokens(char *input) {
 	int countPipe;
 
 	// TODO manage leaks in tks
-	t_token *tks = tokens(input);
+	t_token *tks = tokens(input,vars);
+	
 	cmds = NULL;
 	get_new_cmd = NULL;
 	countPipe = count_pipe(tks);
@@ -61,3 +64,5 @@ t_command *split_commands_tokens(char *input) {
 	}
 	return (cmds);
 }
+
+

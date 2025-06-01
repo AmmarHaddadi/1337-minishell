@@ -17,13 +17,13 @@ typedef struct s_token
 	char			*value;
 	t_token_type	type;
 	int				has_space;
+	int				has_quote_single ;
 	struct s_token	*next;
 }					t_token;
 
-t_token				*tokens(char *input);
 t_token				*ft_split_lexer(char *str);
 void				ft_lstadd_back(t_token **lst, t_token *new);
-t_token				*ft_lstnew_token(void *content);
+t_token				*ft_lstnew_token_add_type(void *content , int isword, int is_quote_single);
 t_token				*ft_lstnew_token_add_mode(void *file, int mode);
 int					ft_lstsize_token(t_token *lst);
 

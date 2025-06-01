@@ -39,6 +39,8 @@ typedef struct s_command {
 } t_command;
 
 // utils
+
+t_token				*tokens(char *input, t_shellvar *vars);
 int my_strcmp(const char *s1, const char *s2);
 int matrixlen(char **matrix);
 void freematrix(char **m);
@@ -48,7 +50,7 @@ t_command			*push_struct(t_token *tokens);
 t_redir				*ft_lstnew_redir(void *file, int mode);
 void				ft_lstadd_back_redir(t_redir **lst, t_redir *new);
 void				ft_lstadd_back_cmd(t_command **lst, t_command *new);
-t_command			*split_commands_tokens(char *input);
+t_command			*split_commands_tokens(char *input  , t_shellvar *vars);
 void	sigint_handler(int signum);
 int	check_space_newline(char *input);
 #endif
