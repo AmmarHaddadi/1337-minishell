@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 12:43:35 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/01 18:48:15 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/01 22:13:45 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,25 @@ static char *string_value(char *s, t_shellvar *vars)
 	char *result = malloc(1);
 
 	size_t i = 0, j = 0;
+	int vld = 0;
+	// int cnt = 0;
 
 	while (s[i])
 	{
-		if(s[i] == '$' && ft_isdigit(s[i + 1]))
-			i +=2;
-		else if (s[i] == '$'  &&  (((s[i + 1] == '"' || s[i + 1] == '\'') && ft_isalpha(s[i + 2])) || ft_isalpha(s[i + 1]) || s[i + 1] == '?') )
+		
+		if( s[i] == '"' && vld == 0 )
 		{
+			vld = 1;
+		}
+		else if( s[i] == '"' )
+		{
+			vld = 0;
+		}
+		if (s[i] == '$' && ft_isdigit(s[i + 1]))
+			i += 2;
+		else if (s[i] == '$' && ((((s[i + 1] == '"' && vld == 1) || (s[i + 1] == '\'' && vld == 0)) && ft_isalpha(s[i + 2])) || ft_isalpha(s[i + 1]) || s[i + 1] == '?'))
+		{
+			printf("+\n");
 			i++;
 			char *varname = malloc(1);
 			if (!varname)
@@ -102,8 +114,6 @@ static char *string_value(char *s, t_shellvar *vars)
 				varname[k++] = s[i++];
 			}
 			varname[k] = '\0';
-			// printf("%s\n",varname);
-
 
 			char *value = getvar(varname, vars);
 			if (!value)
@@ -129,6 +139,7 @@ static char *string_value(char *s, t_shellvar *vars)
 	}
 
 	result[j] = '\0';
+	printf("result = %s\n", result);
 	return result;
 }
 
@@ -139,8 +150,8 @@ t_token *tokens(char *input, t_shellvar *vars)
 	t_token *handle_tokens;
 
 	// t_token *tmp;
-	
-    input =	string_value(input, vars);
+
+	input = string_value(input, vars);
 	lexer = ft_split_lexer(input);
 	// tokens = typ_token(lexer);
 

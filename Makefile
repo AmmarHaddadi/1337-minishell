@@ -1,5 +1,5 @@
 SRC = $(shell find src -type f -name "*.c")
-CFLAGS = -Wall -Wextra -Werror -I/Users/$(shell echo $$USER)/.brew/opt/readline/include
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g -I/Users/$(shell echo $$USER)/.brew/opt/readline/include
 LDFLAGS = -L/usr/local/lib -lreadline
 
 NAME = minishell
