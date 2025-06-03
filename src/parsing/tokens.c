@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 12:43:35 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/01 22:13:45 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/03 19:30:52 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,24 +82,29 @@ static char *string_value(char *s, t_shellvar *vars)
 
 	size_t i = 0, j = 0;
 	int vld = 0;
-	// int cnt = 0;
+	int vld_single = 0;
 
 	while (s[i])
 	{
 		
-		if( s[i] == '"' && vld == 0 )
-		{
+		if(( s[i] == '"' || s[i - 1] == '"') && s[i] != '$'  && vld == 0 && vld_single == 0)
 			vld = 1;
-		}
 		else if( s[i] == '"' )
-		{
 			vld = 0;
-		}
+		printf("1  %zu => %c = %d  = %d\n",i,s[i] ,vld ,vld_single);
+		
+		if( (s[i] == '\'' || s[i - 1] == '\'' ) && s[i] != '$' && vld_single == 0 && vld == 0)
+			vld_single = 1;
+		else if( s[i] == '\'' )
+			vld_single = 0;
+		
+		printf("2  %zu => %c = %d  = %d\n",i,s[i] ,vld ,vld_single);
+		
+		
 		if (s[i] == '$' && ft_isdigit(s[i + 1]))
 			i += 2;
-		else if (s[i] == '$' && ((((s[i + 1] == '"' && vld == 1) || (s[i + 1] == '\'' && vld == 0)) && ft_isalpha(s[i + 2])) || ft_isalpha(s[i + 1]) || s[i + 1] == '?'))
+		else if (s[i] == '$' && s[i + 1] != '\'' && s[i + 1] != '"' && vld_single == 0 && s[i + 1] != ' ')
 		{
-			printf("+\n");
 			i++;
 			char *varname = malloc(1);
 			if (!varname)
@@ -131,6 +136,10 @@ static char *string_value(char *s, t_shellvar *vars)
 		}
 		else
 		{
+			printf("3  %zu => %c = %d  = %d\n",i,s[i] ,vld ,vld_single);
+			
+			if( s[i] == '$' && (( s[i + 1] == '"' || s[i + 1] == '\'' ) && vld == 0 && vld_single == 0)  )
+				i++;
 			result = realloc(result, j + 2);
 			if (!result)
 				return NULL;
@@ -139,9 +148,11 @@ static char *string_value(char *s, t_shellvar *vars)
 	}
 
 	result[j] = '\0';
-	printf("result = %s\n", result);
 	return result;
 }
+
+
+
 
 t_token *tokens(char *input, t_shellvar *vars)
 {
@@ -150,6 +161,7 @@ t_token *tokens(char *input, t_shellvar *vars)
 	t_token *handle_tokens;
 
 	// t_token *tmp;
+	// (void)vars;
 
 	input = string_value(input, vars);
 	lexer = ft_split_lexer(input);
