@@ -6,7 +6,7 @@ typedef struct s_command t_command;
 typedef struct s_shellvar t_shellvar;
 typedef struct s_redir t_redir;
 int bin(t_command *cmd, t_shellvar *vars);
-int maestro(t_command *cmd, t_shellvar *vars);
+int maestro(t_command *cmd, t_shellvar *vars, int *xt);
 
 // helper
 char *getvalidpath(t_command *cmd, char *path);

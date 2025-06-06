@@ -1,16 +1,17 @@
 #include "../main.h"
 
 int **setuppipes(int len) {
-	int **matrix = malloc(len * sizeof(int));
+	int **matrix = malloc(len * sizeof(int *));
 	for (int i = 0; i < len; i++)
 		matrix[i] = malloc(2 * sizeof(int));
 	for (int i = 0; i < len; i++) {
-		if (pipe(matrix[i]) == -1)
-			// XXX free previous shit and return NULL
+		if (pipe(matrix[i]) == -1) {
+			for (int j = 0; j < len; j++)
+				free(matrix[j]);
+			free(matrix);
 			return NULL;
+		}
 	}
-	// close(matrix[0][0]);
-	// close(matrix[0][1]);
 	return matrix;
 }
 

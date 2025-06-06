@@ -116,15 +116,12 @@ int maestro(t_command *cmd, t_shellvar *vars, int *xt) {
 	}
 
 	// waiting for processes to fininsh
+	int ret = 0;
+	int stat;
 	for (int i = 0; i < clen; i++) {
 		waitpid(pids[i], &stat, 0);
-		if (WIFEXITED(stat) == 0) {
-			// ft_putstr_fd("child exited unexpectedly\n", STDERR_FILENO);
-			ret = -1;
-		} else {
-			if (i == clen - 1)
-				ret = WEXITSTATUS(stat);
-		}
+		if (i == clen - 1)
+			ret = WEXITSTATUS(stat);
 	}
 	freepipes(pipes, clen - 1);
 	free(pids);
