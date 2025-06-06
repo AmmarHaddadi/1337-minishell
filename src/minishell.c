@@ -1,27 +1,42 @@
 #include "main.h"
 
+bool ctrlc = false;
+
 int main(int ac, char **av, char **env) {
+	int xit = false; // toggle true to exit
 	char *input;
 	t_command *cmd;
 
 	(void)ac;
 	(void)av;
-
+	signal(SIGQUIT, handle_ctrlback);
+	signal(SIGINT, handle_ctrlc);
 	t_shellvar *vars = envtoll(env);
-	if (!vars) {
-		printf("no env");
-		return 1;
-	}
-	// signal(SIGINT, sigint_handler); // Ctrl+C
-	while (1) {
+
+	while (xit == false) {
 		input = readline("minishell$ ");
-		if (check_space_newline(input))
+		if (ctrlc == true) {
+			ctrlc = false;
+			free(input);
 			continue;
+		}
+		// EOF aka ctrl-D
+		if (!input)
+			break;
+		// skip empty input
+		if (all_whitespace(input)) {
+			free(input);
+			continue;
+		}
 		add_history(input);
 		cmd = split_commands_tokens(input);
-		maestro(cmd, vars);
+		if (!cmd)
+			continue;
+		updatevar("?", ft_itoa(maestro(cmd, vars, &xit)), vars, 0);
 		free(input);
 		freecmd(cmd);
 	}
+	xit = ft_atoi(getvar("?", vars));
 	freeenv(vars);
+	exit(xit % 256);
 }
