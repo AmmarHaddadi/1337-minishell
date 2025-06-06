@@ -15,4 +15,5 @@ int **setuppipes(int len);
 int cmdlen(t_command *cmd);
 void freepipes(int **pipes, int len);
 void freecmd(t_command *cmd);
+void set_xt(t_command *cmd, int *xt);
 #endif

@@ -31,36 +31,44 @@ int execbltn(t_command *cmd, t_shellvar *vars) {
 		return unset(cmd, &vars);
 	else if (!my_strcmp("env", cmd->args[0]))
 		return env(vars);
-	// TODO: need to free shit before exit, talk w salah
-	// else if (!my_strcmp("exit", cmd->args[0]))
-	// return builtin_exit(cmd);
+	else if (!my_strcmp("exit", cmd->args[0]))
+		return builtin_exit(cmd);
 	return 0;
 }
 
 // NOTE if there is a redir, write to it not the pipe
-// returns the exit code
+// NOTE this is it's own fork, so exit, not return
+// QUESTION for norme, can I return(f1(), exit(code), 1) ??
+// technically I need to free vars and cmd too...
 int bin(t_command *cmd, t_shellvar *vars) {
-	if (!setupfd(cmd->redirections))
-		return (ft_putstr_fd("can't setup fd\n", STDERR_FILENO), 1);
+	if (!setupfd(cmd->redirections)) {
+		ft_putstr_fd("can't setup fd\n", STDERR_FILENO);
+		exit(1);
+	}
 	if (isbltn(cmd))
 		exit(execbltn(cmd, vars));
 	char *path = getvalidpath(cmd, getvar("PATH", vars));
-	if (!path)
-		return (ft_putstr_fd("bin not found\n", STDERR_FILENO), 127);
+	if (!path) {
+		ft_putstr_fd("bin not found\n", STDERR_FILENO);
+		exit(127);
+	}
 	char **env = varstomatrix(vars);
-	if (!env)
-		return (ft_putstr_fd("err env\n", STDERR_FILENO), free(path), 127);
+	if (!env) {
+		ft_putstr_fd("err env\n", STDERR_FILENO);
+		free(path);
+		exit(127);
+	}
 	execve(path, cmd->args, env);
 	perror("execution failed");
 	freematrix(env);
 	free(path);
-	return 126;
+	exit(126);
 }
 
-int maestro(t_command *cmd, t_shellvar *vars) {
+int maestro(t_command *cmd, t_shellvar *vars, int *xt) {
 	int clen = cmdlen(cmd);
-	int ret = 0;
-	int stat;
+	// if "exit" found in LL -> toggle on exit mode
+	set_xt(cmd, xt);
 	pid_t *pids = malloc(clen * sizeof(pid_t)); // Array to store PIDs
 	if (!pids)
 		return (perror("pid array allocation failed"), 1);
