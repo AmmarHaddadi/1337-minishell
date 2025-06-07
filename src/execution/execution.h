@@ -1,0 +1,19 @@
+#ifndef EXECUTION_H
+#define EXECUTION_H
+#include <stdbool.h>
+
+typedef struct s_command t_command;
+typedef struct s_shellvar t_shellvar;
+typedef struct s_redir t_redir;
+int bin(t_command *cmd, t_shellvar *vars);
+int maestro(t_command *cmd, t_shellvar *vars, int *xt);
+
+// helper
+char *getvalidpath(t_command *cmd, char *path);
+bool setupfd(t_redir *red);
+int **setuppipes(int len);
+int cmdlen(t_command *cmd);
+void freepipes(int **pipes, int len);
+void freecmd(t_command *cmd);
+void set_xt(t_command *cmd, int *xt);
+#endif
