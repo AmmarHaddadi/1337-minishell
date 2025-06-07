@@ -12,13 +12,11 @@
 
 #include "../main.h"
 
-static t_token	*typ_token(t_token *lexer)
-{
-	t_token	*head;
+static t_token *typ_token(t_token *lexer) {
+	t_token *head;
 
 	head = lexer;
-	while (lexer != NULL)
-	{
+	while (lexer != NULL) {
 		if (ft_strcmp(lexer->value, ">") == 0)
 			lexer->type = TOKEN_REDIR_OUT;
 		else if (ft_strcmp(lexer->value, "<") == 0)
@@ -36,20 +34,17 @@ static t_token	*typ_token(t_token *lexer)
 	return (head);
 }
 
-static t_token	*join_token_word(t_token *tokens)
-{
-	t_token	*new_tkn;
-	t_token	*tmp;
-	char	*joined;
+static t_token *join_token_word(t_token *tokens) {
+	t_token *new_tkn;
+	t_token *tmp;
+	char *joined;
 
 	new_tkn = NULL;
-	while (tokens != NULL)
-	{
+	while (tokens != NULL) {
 		if (!(joined = ft_strdup(tokens->value)))
 			return (NULL);
-		while (tokens->next && tokens->has_space == 0
-			&& tokens->next->type == TOKEN_WORD && tokens->type == TOKEN_WORD)
-		{
+		while (tokens->next && tokens->has_space == 0 &&
+			   tokens->next->type == TOKEN_WORD && tokens->type == TOKEN_WORD) {
 			joined = ft_strjoin(joined, tokens->next->value);
 			if (!joined)
 				return (NULL);
@@ -65,26 +60,22 @@ static t_token	*join_token_word(t_token *tokens)
 	return (new_tkn);
 }
 
-static int	quote_check(t_token *lexer)
-{
-	while (lexer != NULL)
-	{
-		if (ft_strcmp(lexer->value, "\"") == 0 || ft_strcmp(lexer->value,
-				"'") == 0)
+static int quote_check(t_token *lexer) {
+	while (lexer != NULL) {
+		if (ft_strcmp(lexer->value, "\"") == 0 ||
+			ft_strcmp(lexer->value, "'") == 0)
 			return (1);
 		lexer = lexer->next;
 	}
 	return (0);
 }
 
-static int	pipes_check(t_token *token)
-{
+static int pipes_check(t_token *token) {
 	if (token && ft_strcmp(token->value, "|") == 0)
 		return (1);
-	while (token != NULL)
-	{
-		if (token->next != NULL && ft_strcmp(token->value, "|") == 0
-			&& ft_strcmp(token->next->value, "|") == 0)
+	while (token != NULL) {
+		if (token->next != NULL && ft_strcmp(token->value, "|") == 0 &&
+			ft_strcmp(token->next->value, "|") == 0)
 			return (1);
 		if (ft_strcmp(token->value, "|") == 0 && token->next == NULL)
 			return (1);
@@ -93,33 +84,32 @@ static int	pipes_check(t_token *token)
 	return (0);
 }
 
-t_token	*tokens(char *input)
-{
-	t_token	*lexer;
-	t_token	*tokens;
-	t_token	*handle_tokens;
+t_token *tokens(char *input) {
+	t_token *lexer;
+	t_token *tokens;
+	t_token *handle_tokens;
 
-	t_token	*tmp;
 	lexer = ft_split_lexer(input);
 	tokens = typ_token(lexer);
-	
-	if (quote_check(tokens))
-	{
-		printf("minishell: no equivalent for singel quote (') or double quote (\")\n");
+
+	if (quote_check(tokens)) {
+		printf("minishell: no equivalent for singel quote (') or double quote "
+			   "(\")\n");
 		return (0);
 	}
+	#ifdef TOKEN
 	// print
+	t_token *tmp;
 	tmp = tokens;
-	while (tmp != NULL)
-	{
-		printf("[ %3s ]  -- has space: %3d -- type: %3d\n",
-			tmp->value,tmp->has_space, tmp->type);
-				tmp = tmp->next;
-			}
-			printf("NULL\n");
+	while (tmp != NULL) {
+		printf("[ %3s ]  -- has space: %3d -- type: %3d\n", tmp->value,
+			   tmp->has_space, tmp->type);
+		tmp = tmp->next;
+	}
+	printf("NULL\n");
+	#endif
 	handle_tokens = join_token_word(tokens);
-	if (pipes_check(handle_tokens))
-	{
+	if (pipes_check(handle_tokens)) {
 		printf("minishell: syntax error near unexpected token  '|'\n");
 		return (0);
 	}

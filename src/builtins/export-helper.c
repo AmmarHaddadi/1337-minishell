@@ -1,5 +1,4 @@
 #include "../main.h"
-#include <stdio.h>
 
 void bubble_sort_shellvars(t_shellvar *head) {
 	if (!head)

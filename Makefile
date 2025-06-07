@@ -1,6 +1,8 @@
 SRC = $(shell find src -type f -name "*.c")
-CFLAGS = -Wall -Wextra -Werror -I/Users/$(shell echo $$USER)/.brew/opt/readline/include
-LDFLAGS = -L/usr/local/lib -lreadline
+CFLAGS = -Wall -Wextra -Werror 
+RDL = $(shell brew --prefix readline)
+LDFLAGS = -lreadline -L$(RDL)/lib -I$(RDL)/lib
+HDR = src/minishell.h src/parsing/parsing.h src/execution/execution.h src/builtins/builtins.h
 
 NAME = minishell
 
@@ -10,7 +12,7 @@ all: $(OBJS)
 	@make -C src/libft
 	cc $(CFLAGS) $(OBJS) src/libft/libft.a -o $(NAME) $(LDFLAGS)
 
-%.o : %.c src/minishell.h src/parsing/parsing.h
+%.o : %.c $(HDR)
 	cc $(CFLAGS) -c $< -o $@
 
 clean:

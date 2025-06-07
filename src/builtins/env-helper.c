@@ -1,7 +1,5 @@
 #include "../main.h"
-#include <string.h>
 
-// TODO if malloc fails free previous shit and return NULL
 t_shellvar *envtoll(char **env) {
 	if (!env)
 		return NULL;
@@ -9,8 +7,8 @@ t_shellvar *envtoll(char **env) {
 	t_shellvar *curr = head;
 	for (int i = 0; env[i]; i++) {
 		char **s = ft_split(env[i], '=');
-		curr->key = strdup(s[0]);
-		curr->value = strdup(s[1]);
+		curr->key = ft_strdup(s[0]);
+		curr->value = ft_strdup(s[1]);
 		curr->exported = true;
 		if (env[i + 1] == NULL)
 			curr->next = NULL;
@@ -19,12 +17,13 @@ t_shellvar *envtoll(char **env) {
 		curr = curr->next;
 		freematrix(s);
 	}
-
+	updatevar("?", "0", head, 0);
 	return head;
 }
 
+// WARN only free using freeenv();
 char *getvar(char *key, t_shellvar *vars) {
-	if (!key || !vars)
+	if (!key || !*key || !vars)
 		return NULL;
 	while (vars != NULL) {
 		if (!my_strcmp(key, vars->key))
@@ -32,4 +31,16 @@ char *getvar(char *key, t_shellvar *vars) {
 		vars = vars->next;
 	}
 	return NULL;
+}
+
+void freeenv(t_shellvar *vars) {
+	t_shellvar *next;
+	t_shellvar *curr = vars;
+	while (curr) {
+		next = curr->next;
+		free(curr->key);
+		free(curr->value);
+		free(curr);
+		curr = next;
+	}
 }

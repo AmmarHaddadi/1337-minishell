@@ -1,6 +1,4 @@
 #include "../main.h"
-// #include <cstddef>
-#include <stdlib.h>
 
 // export VAR -> export=true
 // export VAR=VAL -> export=true and update val || create
@@ -40,8 +38,13 @@ int export(t_shellvar *vars, t_command *command) {
 	if (command->args[1] == NULL) {
 		bubble_sort_shellvars(vars);
 		while (vars != NULL) {
-			if (vars->exported == true)
-				printf("declare -x %s=\"%s\"\n", vars->key, vars->value);
+			if (vars->exported == true) {
+				ft_putstr_fd("declare -x ", STDOUT_FILENO);
+				ft_putstr_fd(vars->key, STDOUT_FILENO);
+				ft_putstr_fd("=\"", STDOUT_FILENO);
+				ft_putstr_fd(vars->value, STDOUT_FILENO);
+				ft_putstr_fd("\"\n", STDOUT_FILENO);
+			}
 			vars = vars->next;
 		}
 		return 0;
