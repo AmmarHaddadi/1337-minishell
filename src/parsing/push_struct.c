@@ -56,6 +56,8 @@ t_command	*push_struct(t_token *tokens)
 {
 	t_command *cmd = malloc(sizeof(t_command));
 	t_token *head = tokens;
+	// t_token *original = head;
+
 	if (!cmd)
 		return (NULL);
 
@@ -70,6 +72,8 @@ t_command	*push_struct(t_token *tokens)
 
 	// 2 . while -> push *filename | red_mode
 	t_token *tkn;
+
+	
 	while (tokens != NULL)
 	{
 		tkn = search_mode(tokens);

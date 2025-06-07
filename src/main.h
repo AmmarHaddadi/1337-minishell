@@ -7,11 +7,11 @@
 #include "parsing/parsing.h"
 #include "signals.h"
 #include <fcntl.h>
-#include <stdio.h>
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <signal.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -41,13 +41,6 @@ typedef struct s_command {
 	struct s_command *next;
 } t_command;
 
-// parsing expantion shit
-typedef enum quote {
-	none,
-	single,
-	dbl // can't name it double
-} t_quote;
-
 // utils
 int my_strcmp(const char *s1, const char *s2);
 int matrixlen(char **matrix);
@@ -58,7 +51,8 @@ t_command *push_struct(t_token *tokens);
 t_redir *ft_lstnew_redir(void *file, int mode);
 void ft_lstadd_back_redir(t_redir **lst, t_redir *new);
 void ft_lstadd_back_cmd(t_command **lst, t_command *new);
-t_command *split_commands_tokens(char *input);
+t_command *split_commands_tokens(char *input, t_shellvar *vars);
 void sigint_handler(int signum);
 bool all_whitespace(char *input);
+t_token *tokens(char *input, t_shellvar *vars);
 #endif

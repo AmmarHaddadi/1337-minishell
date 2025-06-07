@@ -29,7 +29,7 @@ int main(int ac, char **av, char **env) {
 			continue;
 		}
 		add_history(input);
-		cmd = split_commands_tokens(input);
+		cmd = split_commands_tokens(input, vars);
 		if (!cmd)
 			continue;
 		updatevar("?", ft_itoa(maestro(cmd, vars, &xit)), vars, 0);

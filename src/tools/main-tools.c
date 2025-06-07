@@ -18,4 +18,5 @@ bool all_whitespace(char *input) {
 		i++;
 	}
 	return (true);
+	free(input);
 }

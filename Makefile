@@ -3,7 +3,6 @@ CFLAGS = -Wall -Wextra -Werror
 RDL = $(shell brew --prefix readline)
 LDFLAGS = -lreadline -L$(RDL)/lib -I$(RDL)/lib
 HDR = src/minishell.h src/parsing/parsing.h src/execution/execution.h src/builtins/builtins.h
-
 NAME = minishell
 
 OBJS = $(SRC:.c=.o)
