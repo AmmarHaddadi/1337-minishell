@@ -6,20 +6,20 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:23:47 by ssallami          #+#    #+#             */
-/*   Updated: 2025/05/29 19:47:05 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/07 16:17:58 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
 
-t_token	*ft_lstnew_token_add_type(void *content , int isword , int is_quote_single)
+t_token	*ft_lstnew_token_add_type(void *content , int isword)
 {
 	t_token	*node;
 
 	node = (t_token *)malloc(sizeof(t_token));
 	if (!node)
 		return (NULL);
-	node->value = content;
+	node->value = ft_strdup(content);
 
 	if (ft_strcmp(content, ">") == 0 && !isword)
 			node->type = TOKEN_REDIR_OUT;
@@ -33,11 +33,6 @@ t_token	*ft_lstnew_token_add_type(void *content , int isword , int is_quote_sing
 			node->type = TOKEN_PIPE;
 		else
 			node->type = TOKEN_WORD;
-	printf("%d $\n",is_quote_single);
-	if(is_quote_single)
-		node->has_quote_single = 1;
-	else
-		node->has_quote_single = 0;
 	node->next = NULL;
 	return (node);
 }

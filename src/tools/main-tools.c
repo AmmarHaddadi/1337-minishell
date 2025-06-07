@@ -18,5 +18,6 @@ int	check_space_newline(char *input)
 			return (0);
 		i++;
 	}
+	free(input);
 	return (1);
 }
