@@ -1,21 +1,24 @@
 #include "../main.h"
 
-bool isbltn(t_command *cmd) {
+// 0 -> no
+// 1 -> bltn
+// 2 -> execute in-shell
+static int isbltn(t_command *cmd) {
 	if (!my_strcmp("echo", cmd->args[0]))
-		return true;
+		return 1;
 	else if (!my_strcmp("cd", cmd->args[0]))
-		return true;
+		return 1;
 	else if (!my_strcmp("pwd", cmd->args[0]))
-		return true;
+		return 1;
 	else if (!my_strcmp("export", cmd->args[0]))
-		return true;
+		return 2;
 	else if (!my_strcmp("unset", cmd->args[0]))
-		return true;
+		return 2;
 	else if (!my_strcmp("env", cmd->args[0]))
-		return true;
+		return 1;
 	else if (!my_strcmp("exit", cmd->args[0]))
-		return true;
-	return false;
+		return 1;
+	return 0;
 }
 
 int execbltn(t_command *cmd, t_shellvar *vars) {
@@ -69,6 +72,8 @@ int maestro(t_command *cmd, t_shellvar *vars, int *xt) {
 	int clen = cmdlen(cmd);
 	// if "exit" found in LL -> toggle on exit mode
 	set_xt(cmd, xt);
+	if (isbltn(cmd) == 2 && clen == 1)
+		return execbltn(cmd, vars);
 	pid_t *pids = malloc(clen * sizeof(pid_t)); // Array to store PIDs
 	if (!pids)
 		return (perror("pid array allocation failed"), 1);
