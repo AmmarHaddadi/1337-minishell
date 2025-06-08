@@ -27,7 +27,7 @@ char *replace(char *input, t_shellvar *vars) {
 				 (ft_isalpha(input[i + 1]) || input[i + 1] == '?' || input[i + 1] == '_' ||  !input[i + 1])) {
 			int j = i + 1;
 			// from $ to before first non valid char
-			while (ft_isalpha(input[j]) || input[j] == '_' || ft_isdigit(input[j] || input[j] == '?'))
+			while (ft_isalpha(input[j]) || input[j] == '_' || ft_isdigit(input[j]) || input[j] == '?')
 				j++;
 			char *key = ft_substr(input, i + 1, j - i - 1);
 			char *val = getvar(key, vars);
@@ -74,7 +74,7 @@ char *replace(char *input, t_shellvar *vars) {
 				 (ft_isalpha(input[i + 1]) || input[i + 1] == '?'  || input[i + 1] == '_' ||  !input[i + 1])) {
 			int j = i + 1;
 			// from $ to before first non valid char
-			while (ft_isalpha(input[j]) || input[j] == '_' || ft_isdigit(input[j] || input[j] == '?' ))
+			while (ft_isalpha(input[j]) || input[j] == '_' || ft_isdigit(input[j]) || input[j] == '?' )
 				j++;
 			char *key = ft_substr(input, i + 1, j - i - 1);
 			char *val = getvar(key, vars);
