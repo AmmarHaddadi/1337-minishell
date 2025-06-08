@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:56:24 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/07 16:45:56 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:00:48 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,10 @@ t_token	*ft_split_lexer(char *str)
 				ft_lstadd_back(&head, ft_lstnew_token_add_type("", isword));
 			// check is no equivalent for singel quote or double quote ( '' | "" )
 			else if (i == j + 1 && (str[j] == '"' || str[j] == '\''))
-				return (printf("minishell: no equivalent for singel quote (') or double quote (\")\n"),
-					NULL);
+			{
+				// updatevar("?", "258", vars, false);
+				return (printf("minishell: no equivalent for singel quote (') or double quote (\")\n"),NULL);
+			}
 			else if (i != j)
 				ft_lstadd_back(&head, ft_lstnew_token_add_type(word, isword));
 			last = ft_lstlast(head);

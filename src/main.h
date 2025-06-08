@@ -27,6 +27,7 @@ typedef enum red_mode {
 	override,
 	append,
 	in,
+	heredoc,
 } t_red_mode;
 
 typedef struct s_redir {

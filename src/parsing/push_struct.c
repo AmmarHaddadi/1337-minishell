@@ -82,8 +82,6 @@ t_command	*push_struct(t_token *tokens)
 
 		if (tkn->next != NULL)
 		{
-			if(tkn->type == TOKEN_HEREDOC)
-				tkn->type = TOKEN_REDIR_IN;
 			ft_lstadd_back_redir(&cmd->redirections,ft_lstnew_redir(tkn->next->value, tkn->type));
 			tkn->type = 10;
 			tkn->next->type = 10;
