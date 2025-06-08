@@ -4,6 +4,8 @@
 // 1 -> bltn
 // 2 -> execute in-shell
 static int isbltn(t_command *cmd) {
+	if (cmd->args == NULL || cmd->args[0] == NULL)
+		return 0;
 	if (!my_strcmp("echo", cmd->args[0]))
 		return 1;
 	else if (!my_strcmp("cd", cmd->args[0]))
