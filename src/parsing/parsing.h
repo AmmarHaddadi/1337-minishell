@@ -28,7 +28,7 @@ typedef struct s_token
 }					t_token;
 
 typedef struct s_shellvar t_shellvar;
-t_token				*ft_split_lexer(char *str);
+t_token				*ft_split_lexer(char *str , t_shellvar *vars);
 void				ft_lstadd_back(t_token **lst, t_token *new);
 t_token				*ft_lstnew_token_add_type(void *content, int isword);
 t_token				*ft_lstnew_token_add_mode(void *file, int mode);

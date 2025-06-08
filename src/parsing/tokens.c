@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 12:43:35 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/07 16:45:42 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/08 22:25:16 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static t_token	*join_token_word(t_token *tokens)
 	char	*tmp_str;
 
 	new_tkn = NULL;
-	while (tokens != NULL) {
+	while (tokens != NULL)
+	{
 		if (!(joined = ft_strdup(tokens->value)))
 			return (NULL);
 		while (tokens->next && tokens->has_space == 0
@@ -84,7 +85,7 @@ t_token	*tokens(char *input, t_shellvar *vars)
 	t_token	*handle_tokens;
 	t_token	*tmp;
 
-	lexer = ft_split_lexer(input);
+	lexer = ft_split_lexer(input, vars);
 	handle_tokens = join_token_word(lexer);
 	tmp = handle_tokens;
 	while (tmp != NULL)
@@ -94,10 +95,14 @@ t_token	*tokens(char *input, t_shellvar *vars)
 	}
 	free_tokens(lexer);
 	if (pipes_check(handle_tokens))
-		return (printf("minishell: syntax error near unexpected token  '|'\n"),
-			NULL);
+	{
+		updatevar("?", "258", vars, false);
+		return (printf("minishell: syntax error near unexpected token  '|'\n"),NULL);
+	}
 	if (check_word_after_operator(handle_tokens))
-		return (printf("minishell: syntax error near unexpected token  '>' or '<' or '>>' or '<<'\n"),
-			NULL);
+	{
+		updatevar("?","258", vars, false);
+		return (printf("minishell: syntax error near unexpected token  '>' or '<' or '>>' or '<<'\n"),NULL);
+	}
 	return (handle_tokens);
 }

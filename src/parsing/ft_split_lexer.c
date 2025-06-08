@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:56:24 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/08 20:00:48 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/08 22:22:58 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	len_word(char *str, int *i)
 	}
 }
 
-t_token	*ft_split_lexer(char *str)
+t_token	*ft_split_lexer(char *str , t_shellvar *vars)
 {
 	int		i;
 	int		j;
@@ -84,7 +84,7 @@ t_token	*ft_split_lexer(char *str)
 			// check is no equivalent for singel quote or double quote ( '' | "" )
 			else if (i == j + 1 && (str[j] == '"' || str[j] == '\''))
 			{
-				// updatevar("?", "258", vars, false);
+				updatevar("?","258", vars, false);
 				return (printf("minishell: no equivalent for singel quote (') or double quote (\")\n"),NULL);
 			}
 			else if (i != j)
