@@ -83,7 +83,8 @@ static void	write_files_heredoc(t_redir *redirections, int *index)
 				close(fd);
 			}
 			free(namefile);
-			free(creat_in_tmp);
+			free(tmp_redirections->filename);
+			tmp_redirections->filename = creat_in_tmp;
 		}
 		tmp_redirections = tmp_redirections->next;
 	}

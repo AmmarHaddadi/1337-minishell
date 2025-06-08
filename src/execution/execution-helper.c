@@ -66,7 +66,7 @@ bool setupfd(t_redir *red) {
 	redir = red; // used for looping
 	redfile = NULL;
 	while (redir != NULL) {
-		if (redir->red_mode == in) {
+		if (redir->red_mode == in || redir->red_mode == heredoc) {
 			redfile = redir->filename;
 			break;
 		}
@@ -80,7 +80,7 @@ bool setupfd(t_redir *red) {
 	// changing the in
 	int ifd = open(redfile, O_RDONLY);
 	if (ifd < 0)
-		return (perror("Can't open output file"), close(ofd), false);
+		return (perror("Can't open input file"), close(ofd), false);
 	if (dup2(ifd, STDIN_FILENO) < 0)
 		return (perror("Can't read input"), close(ofd), close(ifd), false);
 	return true;

@@ -9,9 +9,9 @@ static int isbltn(t_command *cmd) {
 	if (!my_strcmp("echo", cmd->args[0]))
 		return 1;
 	else if (!my_strcmp("cd", cmd->args[0]))
-		return 1;
+		return 2;
 	else if (!my_strcmp("pwd", cmd->args[0]))
-		return 1;
+		return 2;
 	else if (!my_strcmp("export", cmd->args[0]))
 		return 2;
 	else if (!my_strcmp("unset", cmd->args[0]))
