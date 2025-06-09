@@ -6,48 +6,51 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:56:24 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/08 22:22:58 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/09 15:12:29 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
 
-static void	len_word(char *str, int *i)
+static int	is_special_char(char c)
+{
+	return (c == ' ' || c == '\t' || c == '>' || c == '<' || c == '|'
+		|| c == '"' || c == '\'' || c == '=');
+}
+
+static void	skip_word(char *str, int *i)
+{
+	while (str[*i] && !is_special_char(str[*i]))
+		(*i)++;
+}
+
+static void	handle_quotes(char *str, int *i)
 {
 	char	quote;
-	int		k;
+	int		start;
 
-	if (str[*i] == '>' || str[*i] == '<' || str[*i] == '|' || str[*i] == '"'
-		|| str[*i] == '\'' || str[*i] == '=')
-	{
-		if (((str[*i + 1] == '>' && str[*i] == '>') || (str[*i + 1] == '<'
-					&& str[*i] == '<')) && str[*i] != '|')
-			*i += 2;
-		else if (str[*i] == '"' || str[*i] == '\'')
-		{
-			quote = str[*i];
-			(*i)++;
-			// (*j)++;
-			k = *i;
-			while (str[*i] && str[*i] != quote)
-				(*i)++;
-			if (str[*i] != quote)
-			{
-				*i = k;
-				return ;
-			}
-			(*i)++;
-		}
-		else
-			(*i)++;
-	}
+	quote = str[*i];
+	(*i)++;
+	start = *i;
+	while (str[*i] && str[*i] != quote)
+		(*i)++;
+	if (str[*i] != quote)
+		*i = start;
 	else
-	{
-		while (str[*i] && str[*i] != ' ' && str[*i] != '\t' && str[*i] != '>'
-			&& str[*i] != '<' && str[*i] != '|' && str[*i] != '"'
-			&& str[*i] != '\'' && str[*i] != '=')
-			(*i)++;
-	}
+		(*i)++;
+}
+
+static void	len_word(char *str, int *i)
+{
+	if (((str[*i + 1] == '>' && str[*i] == '>') || (str[*i + 1] == '<'
+				&& str[*i] == '<')) && str[*i] != '|')
+		*i += 2;
+	else if (!is_special_char(str[*i]))
+		skip_word(str, i);
+	else if (str[*i] == '"' || str[*i] == '\'')
+		handle_quotes(str, i);
+	else
+		(*i)++;
 }
 
 t_token	*ft_split_lexer(char *str , t_shellvar *vars)
