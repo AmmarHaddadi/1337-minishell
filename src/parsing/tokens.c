@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 12:43:35 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/08 22:25:16 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/09 16:37:40 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,12 @@ t_token	*tokens(char *input, t_shellvar *vars)
 	lexer = ft_split_lexer(input, vars);
 	handle_tokens = join_token_word(lexer);
 	tmp = handle_tokens;
+	char *tmp_val;
 	while (tmp != NULL)
 	{
-		tmp->value = ft_strdup(replace(tmp->value, vars));
+		tmp_val = tmp->value;
+		tmp->value = replace(tmp->value, vars);
+		free(tmp_val);
 		tmp = tmp->next;
 	}
 	free_tokens(lexer);

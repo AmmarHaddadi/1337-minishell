@@ -82,10 +82,7 @@ char *replace(char *input, t_shellvar *vars) {
 				val = ft_strdup("");
 			k = 0;
 			while ( k < ft_strlen(val))
-			{
 				str[p++] = val[k++];
-			}
-			
 			i += j - i - 1;
 			free(key);
 		}

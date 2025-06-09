@@ -11,6 +11,7 @@ int main(int ac, char **av, char **env) {
 	(void)av;
 	signal(SIGQUIT, handle_ctrlback);
 	signal(SIGINT, handle_ctrlc);
+	
 	t_shellvar *vars = envtoll(env);
 
 	while (xit == false) {
