@@ -33,7 +33,9 @@ int main(int ac, char **av, char **env) {
 		cmd = split_commands_tokens(input, vars);
 		if (!cmd)
 			continue;
-		updatevar("?", ft_itoa(maestro(cmd, vars, &xit)), vars, 0);
+		char *code = ft_itoa(maestro(cmd, vars, &xit));
+		updatevar("?", code, vars, 0);
+		free(code);
 		free(input);
 		freecmd(cmd);
 	}
