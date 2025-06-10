@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_struct.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/09 20:40:14 by ssallami          #+#    #+#             */
+/*   Updated: 2025/06/09 21:33:04 by ssallami         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../main.h"
 
@@ -51,66 +61,63 @@ static t_token	*search_mode(t_token *tokens)
 	}
 	return (tokens);
 }
-
-t_command	*push_struct(t_token *tokens)
+static void	fill_redirections(t_token **tokens, t_command *cmd)
 {
-	t_command *cmd = malloc(sizeof(t_command));
-	t_token *head = tokens;
-	// t_token *original = head;
+	t_token	*tkn;
 
-	if (!cmd)
-		return (NULL);
-
-	cmd->args = NULL;
-	cmd->redirections = NULL;
-	cmd->next = NULL;
-
-	// push *redirections
-	// 1 . count files
-	int countFiles = count_files(tokens);
-	int countOperator = count_operator(tokens);
-
-	// 2 . while -> push *filename | red_mode
-	t_token *tkn;
-
-	
-	while (tokens != NULL)
+	while ((tkn = search_mode(*tokens)))
 	{
-		tkn = search_mode(tokens);
-		if (tkn == NULL)
-			break ;
-
-		if (tkn->next != NULL)
+		if (tkn->next)
 		{
-			ft_lstadd_back_redir(&cmd->redirections,ft_lstnew_redir(tkn->next->value, tkn->type));
+			ft_lstadd_back_redir(&cmd->redirections,
+				ft_lstnew_redir(tkn->next->value, tkn->type));
 			tkn->type = 10;
 			tkn->next->type = 10;
-			tokens = tkn->next->next;
+			*tokens = tkn->next->next;
 		}
 		else
 			break ;
 	}
+}
 
-	char **ptr = NULL;
-	int countWords = ft_lstsize_token(head) - (countFiles + countOperator);
+static char	**extract_args(t_token *head, int count)
+{
+	char	**args;
+	int		i;
 
-	ptr = (char **)malloc(sizeof(char *) * (countWords + 1));
-	if (!ptr)
+	args = malloc(sizeof(char *) * (count + 1));
+	i = 0;
+	if (!args)
 		return (NULL);
-
-	int i = 0;
-	while (i < countWords && head != NULL)
+	while (head && i < count)
 	{
 		if (head->type == TOKEN_WORD)
-		{
-			ptr[i] = ft_strdup(head->value);
-			i++;
-		}
+			args[i++] = ft_strdup(head->value);
 		head = head->next;
 	}
-	ptr[i] = NULL;
+	args[i] = NULL;
+	return (args);
+}
 
-	cmd->args = ptr;
+t_command	*push_struct(t_token *tokens)
+{
+	t_command	*cmd;
+	t_token		*head;
+	int			files;
+	int			ops;
+	int			words;
 
+	cmd = malloc(sizeof(t_command));
+	head = tokens;
+	files = count_files(tokens);
+	ops = count_operator(tokens);
+	words = ft_lstsize_token(head) - (files + ops);
+	if (!cmd)
+		return (NULL);
+	cmd->args = NULL;
+	cmd->redirections = NULL;
+	cmd->next = NULL;
+	fill_redirections(&tokens, cmd);
+	cmd->args = extract_args(head, words);
 	return (cmd);
 }

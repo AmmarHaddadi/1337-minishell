@@ -1,43 +1,56 @@
 #include "main.h"
 
-bool ctrlc = false;
+bool	ctrlc = false;
 
-int main(int ac, char **av, char **env) {
+void	l(void)
+{
+	system("leaks -q minishell");
+}
+
+int	main(int ac, char **av, char **env)
+{
+	char		*input;
+	t_command	*cmd;
+	t_shellvar	*vars;
+	char		*code;
+
 	int xit = false; // toggle true to exit
-	char *input;
-	t_command *cmd;
-
 	(void)ac;
 	(void)av;
 	signal(SIGQUIT, handle_ctrlback);
 	signal(SIGINT, handle_ctrlc);
-	
-	t_shellvar *vars = envtoll(env);
-
-	while (xit == false) {
+	vars = envtoll(env);
+	while (xit == false)
+	{
 		input = readline("minishell$ ");
-		if (ctrlc == true) {
+		if (ctrlc == true)
+		{
 			ctrlc = false;
 			free(input);
-			continue;
+			continue ;
 		}
 		// EOF aka ctrl-D
 		if (!input)
-			break;
+			break ;
 		// skip empty input
-		if (all_whitespace(input)) {
+		if (all_whitespace(input))
+		{
 			free(input);
-			continue;
+			continue ;
 		}
 		add_history(input);
 		cmd = split_commands_tokens(input, vars);
 		if (!cmd)
-			continue;
-		updatevar("?", ft_itoa(maestro(cmd, vars, &xit)), vars, 0);
+			continue ;
+		code = ft_itoa(maestro(cmd, vars, &xit));
+		updatevar("?", code, vars, 0);
+		free(code);
 		free(input);
 		freecmd(cmd);
+		// l();
 	}
 	xit = ft_atoi(getvar("?", vars));
+	// atexit(l);
 	freeenv(vars);
 	exit(xit % 256);
 }
