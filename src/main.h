@@ -56,4 +56,7 @@ t_command *split_commands_tokens(char *input, t_shellvar *vars);
 void sigint_handler(int signum);
 bool all_whitespace(char *input);
 t_token *tokens(char *input, t_shellvar *vars);
+void						prepare_heredocs(t_command *cmds);
+
+
 #endif
