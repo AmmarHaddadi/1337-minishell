@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahaddadi <ahaddadi@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/07 21:39:42 by ahaddadi          #+#    #+#             */
+/*   Updated: 2025/06/07 21:39:42 by ahaddadi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../main.h"
 
 int	builtin_exit(t_command *cmd)
@@ -6,11 +17,9 @@ int	builtin_exit(t_command *cmd)
 
 	if (matrixlen(cmd->args) > 2)
 		return (ft_putstr_fd("Too many arguments\n", STDERR_FILENO), 1);
-	// first char not +- or 0-9 -> exit 255
 	if (!ft_isdigit(cmd->args[1][0]) && cmd->args[1][0] != '+'
 		&& cmd->args[1][0] != '-')
 		return (255);
-	// exit code not numeric -> exit 255
 	i = 1;
 	while (cmd->args[1][i])
 	{
