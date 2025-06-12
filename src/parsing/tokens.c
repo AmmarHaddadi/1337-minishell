@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 12:43:35 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/09 16:37:40 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:13:54 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,15 @@ t_token	*tokens(char *input, t_shellvar *vars)
 	free_tokens(lexer);
 	if (pipes_check(handle_tokens))
 	{
+		free_tokens(handle_tokens);
+		free(input);
 		updatevar("?", "258", vars, false);
 		return (printf("minishell: syntax error near unexpected token  '|'\n"),NULL);
 	}
 	if (check_word_after_operator(handle_tokens))
 	{
+		free_tokens(handle_tokens);
+		free(input);
 		updatevar("?","258", vars, false);
 		return (printf("minishell: syntax error near unexpected token  '>' or '<' or '>>' or '<<'\n"),NULL);
 	}

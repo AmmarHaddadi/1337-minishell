@@ -2,10 +2,13 @@
 
 bool	ctrlc = false;
 
-void	l(void)
+#ifdef DEBUG
+void l()
 {
 	system("leaks -q minishell");
 }
+#endif
+
 
 int	main(int ac, char **av, char **env)
 {
@@ -47,8 +50,8 @@ int	main(int ac, char **av, char **env)
 		free(code);
 		free(input);
 		freecmd(cmd);
-		// l();
 	}
+	atexit(l);
 	xit = ft_atoi(getvar("?", vars));
 	// atexit(l);
 	freeenv(vars);

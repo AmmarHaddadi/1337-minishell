@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:56:24 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/09 20:36:00 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:17:00 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,14 @@ static void	add_token_if_valid(char *str, t_token **head, int i, int j,
 	else
 		word = NULL;
 	if (is_unclosed_quote(str, i, j))
-		return (updatevar("?", "258", vars, false),
-			(void)printf("minishell: no equivalent for singel quote (') or double quote (\")\n"));
+  {
+    free(str);
+		free(word);
+		free_tokens(head);
+    updatevar("?", "258", vars, false);
+    printf("minishell: no equivalent for singel quote (') or double quote (\")\n");
+    return NULL;
+  }
 	if (i == j && isword)
 		ft_lstadd_back(head, ft_lstnew_token_add_type("", isword));
 	else if (word)

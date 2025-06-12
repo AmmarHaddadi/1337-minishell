@@ -63,6 +63,11 @@ t_command	*split_commands_tokens(char *input, t_shellvar *vars)
 
 	cmds = NULL;
 	tks = tokens(input, vars);
+	if (tks == NULL)
+	{
+		free(input);
+		return (NULL);
+	}
 	tks_head = tks;
 	count = count_pipe(tks);
 	while (count >= 0 && tks)
