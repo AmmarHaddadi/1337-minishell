@@ -2,10 +2,12 @@
 
 bool ctrlc = false;
 
+#ifdef DEBUG
 void l()
 {
 	system("leaks -q minishell");
 }
+#endif
 
 int main(int ac, char **av, char **env) {
 	int xit = false; // toggle true to exit
