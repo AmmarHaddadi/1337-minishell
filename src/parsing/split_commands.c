@@ -118,7 +118,10 @@ t_command	*split_commands_tokens(char *input, t_shellvar *vars)
 	// TODO manage leaks in tks
 	tks = tokens(input, vars);
 	if (tks == NULL)
+	{
+		free(input);
 		return (NULL);
+	}
 	tks_head = tks;
 	cmds = NULL;
 	countPipe = count_pipe(tks);
