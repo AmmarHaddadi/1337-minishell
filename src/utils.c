@@ -1,33 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahaddadi <ahaddadi@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/12 01:41:46 by ahaddadi          #+#    #+#             */
+/*   Updated: 2025/06/12 01:41:46 by ahaddadi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "main.h"
-#include <string.h>
 
-int my_strcmp(const char *s1, const char *s2) {
-	while (*s1 && (*s1 == *s2)) {
+int	my_strcmp(const char *s1, const char *s2)
+{
+	while (*s1 && (*s1 == *s2))
+	{
 		s1++;
 		s2++;
 	}
-	return *(unsigned char *)s1 - *(unsigned char *)s2;
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
-int matrixlen(char **matrix) {
-	int i = 0;
+int	matrixlen(char **matrix)
+{
+	int	i;
+
+	i = 0;
 	if (!matrix || !*matrix)
-		return 0;
+		return (0);
 	while (matrix[i] != NULL)
 		i++;
-	return i;
+	return (i);
 }
 
-void freematrix(char **m) {
-	int i = 0;
+void	freematrix(char **m)
+{
+	int	i;
+
+	i = 0;
 	while (m[i] != NULL)
 		free(m[i++]);
 	free(m);
 }
 
-char *triplejoin(char *a, char *b, char *c) {
-	size_t sz;
-	char *full;
+char	*triplejoin(char *a, char *b, char *c)
+{
+	size_t	sz;
+	char	*full;
 
 	if (!a || !b || !c)
 		return (NULL);
