@@ -2,6 +2,11 @@
 
 bool ctrlc = false;
 
+void l()
+{
+	system("leaks -q minishell");
+}
+
 int main(int ac, char **av, char **env) {
 	int xit = false; // toggle true to exit
 	char *input;
@@ -38,7 +43,9 @@ int main(int ac, char **av, char **env) {
 		free(code);
 		free(input);
 		freecmd(cmd);
+		l();
 	}
+	atexit(l);
 	xit = ft_atoi(getvar("?", vars));
 	freeenv(vars);
 	exit(xit % 256);

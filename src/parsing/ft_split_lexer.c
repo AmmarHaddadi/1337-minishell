@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:56:24 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/09 15:12:29 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:17:00 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ t_token	*ft_split_lexer(char *str , t_shellvar *vars)
 		if (i >= j)
 		{
 			isword = 0;
-			if ((str[i] == '"' && str[j - 1] == '"') || (str[i] == '\'' && str[j
-					- 1] == '\''))
+			if ((str[i] == '"' && str[j - 1] == '"') || (str[i] == '\'' && str[j - 1] == '\''))
 				isword = 1;
 			word = ft_substr(str, j, i - j);
 			if (!word)
@@ -87,6 +86,9 @@ t_token	*ft_split_lexer(char *str , t_shellvar *vars)
 			// check is no equivalent for singel quote or double quote ( '' | "" )
 			else if (i == j + 1 && (str[j] == '"' || str[j] == '\''))
 			{
+				free(str);
+				free(word);
+				free_tokens(head);
 				updatevar("?","258", vars, false);
 				return (printf("minishell: no equivalent for singel quote (') or double quote (\")\n"),NULL);
 			}
