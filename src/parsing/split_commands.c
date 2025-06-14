@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_commands.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/14 09:49:31 by ssallami          #+#    #+#             */
+/*   Updated: 2025/06/14 23:35:55 by ssallami         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../main.h"
 
 static int	count_pipe(t_token *tokens)
@@ -13,6 +25,7 @@ static int	count_pipe(t_token *tokens)
 	}
 	return (count);
 }
+
 static t_token	*split_commands(t_token *tokens)
 {
 	t_token	*new_token;
@@ -26,6 +39,7 @@ static t_token	*split_commands(t_token *tokens)
 	}
 	return (new_token);
 }
+
 static t_token	*search_mode(t_token *tokens)
 {
 	if (!tokens)
@@ -64,10 +78,7 @@ t_command	*split_commands_tokens(char *input, t_shellvar *vars)
 	cmds = NULL;
 	tks = tokens(input, vars);
 	if (tks == NULL)
-	{
-		free(input);
 		return (NULL);
-	}
 	tks_head = tks;
 	count = count_pipe(tks);
 	while (count >= 0 && tks)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/14 08:15:18 by ssallami          #+#    #+#             */
+/*   Updated: 2025/06/14 09:47:19 by ssallami         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSING_H
 # define PARSING_H
 
@@ -37,6 +49,7 @@ int							ft_lstsize_token(t_token *lst);
 void						free_tokens(t_token *tks);
 char						*replace(char *input, t_shellvar *vars);
 void						len_word(char *str, int *i);
-
+t_token						*join_token_word(t_token *tokens);
+int							count_files(t_token *tokens);
 
 #endif

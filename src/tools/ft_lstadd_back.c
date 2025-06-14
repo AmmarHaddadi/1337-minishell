@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:22:14 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/07 16:46:13 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/14 22:58:29 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@ void	ft_lstadd_back_cmd(t_command **lst, t_command *new)
 		prt = prt->next;
 	prt->next = new;
 }
+
 void	ft_lstadd_back_redir(t_redir **lst, t_redir *new)
 {
-	t_redir *ptr;
+	t_redir	*ptr;
 
 	if (!new)
 		return ;

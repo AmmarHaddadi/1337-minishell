@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:56:24 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/12 16:17:00 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/14 08:14:39 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	is_quote_pair(char *str, int i, int j)
 {
-	return ((str[i] == '"' && str[j - 1] == '"') || (str[i] == '\'' && str[j
-			- 1] == '\''));
+	return ((str[i] == '"' && str[j - 1] == '"')
+		|| (str[i] == '\'' && str[j - 1] == '\''));
 }
 
 static int	is_unclosed_quote(char *str, int i, int j)
@@ -23,8 +23,7 @@ static int	is_unclosed_quote(char *str, int i, int j)
 	return (i == j + 1 && (str[j] == '"' || str[j] == '\''));
 }
 
-static void	add_token_if_valid(char *str, t_token **head, int i, int j,
-		t_shellvar *vars)
+static int	add_token_if_valid(char *str, t_token **head, int i, int j)
 {
 	int		isword;
 	char	*word;
@@ -33,16 +32,13 @@ static void	add_token_if_valid(char *str, t_token **head, int i, int j,
 	if (i > j)
 		word = ft_substr(str, j, i - j);
 	else
-		word = NULL;
+		word = ft_strdup("");
 	if (is_unclosed_quote(str, i, j))
-  {
-    free(str);
+	{
 		free(word);
-		free_tokens(head);
-    updatevar("?", "258", vars, false);
-    printf("minishell: no equivalent for singel quote (') or double quote (\")\n");
-    return NULL;
-  }
+		printf("minishell: no equivalent for quote (') or (\")\n");
+		return (false);
+	}
 	if (i == j && isword)
 		ft_lstadd_back(head, ft_lstnew_token_add_type("", isword));
 	else if (word)
@@ -52,6 +48,7 @@ static void	add_token_if_valid(char *str, t_token **head, int i, int j,
 	}
 	if (*head)
 		ft_lstlast(*head)->has_space = (str[i] == ' ');
+	return (true);
 }
 
 t_token	*ft_split_lexer(char *str, t_shellvar *vars)
@@ -69,7 +66,13 @@ t_token	*ft_split_lexer(char *str, t_shellvar *vars)
 			i++;
 		j = i;
 		len_word(str, &i);
-		add_token_if_valid(str, &head, i, j, vars);
+		if (!add_token_if_valid(str, &head, i, j))
+		{
+			free(str);
+			free_tokens(head);
+			updatevar("?", "258", vars, false);
+			return (NULL);
+		}
 	}
 	return (head);
 }

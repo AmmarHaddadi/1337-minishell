@@ -6,29 +6,11 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 20:40:14 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/09 21:33:04 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/14 09:46:44 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
-
-static int	count_files(t_token *tokens)
-{
-	int	count;
-
-	count = 0;
-	while (tokens != NULL)
-	{
-		if (tokens->next != NULL && (tokens->type == TOKEN_REDIR_IN
-				|| tokens->type == TOKEN_REDIR_OUT
-				|| tokens->type == TOKEN_REDIR_APPEND
-				|| tokens->type == TOKEN_HEREDOC)
-			&& tokens->next->type == TOKEN_WORD)
-			count++;
-		tokens = tokens->next;
-	}
-	return (count);
-}
 
 static int	count_operator(t_token *tokens)
 {
@@ -46,6 +28,7 @@ static int	count_operator(t_token *tokens)
 	}
 	return (count);
 }
+
 static t_token	*search_mode(t_token *tokens)
 {
 	if (!tokens)
@@ -61,11 +44,13 @@ static t_token	*search_mode(t_token *tokens)
 	}
 	return (tokens);
 }
+
 static void	fill_redirections(t_token **tokens, t_command *cmd)
 {
 	t_token	*tkn;
 
-	while ((tkn = search_mode(*tokens)))
+	tkn = search_mode(*tokens);
+	while (tkn)
 	{
 		if (tkn->next)
 		{
@@ -77,6 +62,7 @@ static void	fill_redirections(t_token **tokens, t_command *cmd)
 		}
 		else
 			break ;
+		tkn = search_mode(*tokens);
 	}
 }
 
