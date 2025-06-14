@@ -19,7 +19,7 @@ int	echo(t_command *cmd)
 	if (matrixlen(cmd->args) < 2)
 		return (0);
 	i = 1;
-	n = my_strcmp(cmd->args[1], "-n");
+	n = ft_strncmp(cmd->args[1], "-n", 1);
 	if (n == 0)
 		i += 1;
 	while (cmd->args[i])
