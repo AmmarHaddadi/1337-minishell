@@ -20,7 +20,7 @@ char	*ft_strdup(const char *s1)
 	size_t	i;
 
 	if (!s1)
-		return NULL;
+		return (NULL);
 	dup = malloc(ft_strlen(s1) + 1);
 	if (!dup)
 		return (NULL);
@@ -39,12 +39,12 @@ char	*ft_strdup(const char *s1)
 
 // int main()
 // {
-	// strdup(NULL); //segfaults
-	// char *str = strdup(NULL);
+// strdup(NULL); //segfaults
+// char *str = strdup(NULL);
 
-	// char *str = ft_strdup("NULL");
+// char *str = ft_strdup("NULL");
 
-	// printf("str: %s\n", str);
+// printf("str: %s\n", str);
 // }
 
 // #include <stdio.h>

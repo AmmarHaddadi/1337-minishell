@@ -21,10 +21,10 @@ void	rl_replace_line(const char *s, int a);
 // ctrl-c
 void	handle_ctrlc(int sig)
 {
-	extern bool	ctrlc;
+	extern bool	g_ctrlc;
 
 	(void)sig;
-	ctrlc = true;
+	g_ctrlc = true;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);

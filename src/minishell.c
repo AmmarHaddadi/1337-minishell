@@ -1,43 +1,70 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ahaddadi <ahaddadi@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/14 11:54:08 by ahaddadi          #+#    #+#             */
+/*   Updated: 2025/06/14 11:54:08 by ahaddadi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "main.h"
 
-bool ctrlc = false;
+bool		g_ctrlc = false;
 
-int main(int ac, char **av, char **env) {
-	int xit = false; // toggle true to exit
-	char *input;
-	t_command *cmd;
+static bool	conti(char *input, t_command **cmd, t_shellvar *vars)
+{
+	if (all_whitespace(input))
+	{
+		free(input);
+		return (true);
+	}
+	if (g_ctrlc == true)
+	{
+		g_ctrlc = false;
+		free(input);
+	}
+	add_history(input);
+	*cmd = split_commands_tokens(input, vars);
+	return (false);
+}
 
+static void	wrap(t_shellvar *vars, char *code, char *input, t_command *cmd)
+{
+	updatevar("?", code, vars, 0);
+	free(code);
+	free(input);
+	freecmd(cmd);
+}
+
+static void	end(int e, t_shellvar *vars)
+{
+	freeenv(vars);
+	exit(e % 256);
+}
+
+int	main(int ac, char **av, char **env)
+{
+	char		*input;
+	t_command	*cmd;
+	t_shellvar	*vars;
+	int			xit;
+
+	xit = false;
 	(void)ac;
 	(void)av;
 	signal(SIGQUIT, handle_ctrlback);
 	signal(SIGINT, handle_ctrlc);
-	
-	t_shellvar *vars = envtoll(env);
-
-	while (xit == false) {
+	vars = envtoll(env);
+	while (xit == false)
+	{
 		input = readline("minishell$ ");
-		if (ctrlc == true) {
-			ctrlc = false;
-			free(input);
-			continue;
-		}
-		// EOF aka ctrl-D
 		if (!input)
-			break;
-		// skip empty input
-		if (all_whitespace(input)) {
-			free(input);
-			continue;
-		}
-		add_history(input);
-		cmd = split_commands_tokens(input, vars);
-		if (!cmd)
-			continue;
-		updatevar("?", ft_itoa(maestro(cmd, vars, &xit)), vars, 0);
-		free(input);
-		freecmd(cmd);
+			break ;
+		if (conti(input, &cmd, vars) || !cmd)
+			continue ;
+		wrap(vars, ft_itoa(maestro(cmd, vars, &xit)), input, cmd);
 	}
-	xit = ft_atoi(getvar("?", vars));
-	freeenv(vars);
-	exit(xit % 256);
+	end(ft_atoi(getvar("?", vars)), vars);
 }
