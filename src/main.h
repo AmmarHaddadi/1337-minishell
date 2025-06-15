@@ -68,7 +68,7 @@ t_redir					*ft_lstnew_redir(void *file, int mode);
 void					ft_lstadd_back_redir(t_redir **lst, t_redir *new);
 void					ft_lstadd_back_cmd(t_command **lst, t_command *new);
 t_command				*split_commands_tokens(char *input, t_shellvar *vars);
-void					sigint_handler(int signum);
 bool					all_whitespace(char *input);
 t_token					*tokens(char *input, t_shellvar *vars);
+void						prepare_heredocs(t_command *cmds);
 #endif
