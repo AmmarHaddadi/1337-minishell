@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 22:49:12 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/14 22:49:21 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/16 14:01:00 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,4 @@ bool	all_whitespace(char *input)
 		i++;
 	}
 	return (true);
-	free(input);
 }

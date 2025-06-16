@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:56:24 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/14 08:14:39 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:43:41 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	add_token_if_valid(char *str, t_token **head, int i, int j)
 	if (i > j)
 		word = ft_substr(str, j, i - j);
 	else
-		word = ft_strdup("");
+		return (true);
 	if (is_unclosed_quote(str, i, j))
 	{
 		free(word);
