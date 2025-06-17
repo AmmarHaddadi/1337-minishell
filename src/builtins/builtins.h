@@ -9,7 +9,9 @@
 /*   Updated: 2025/06/07 21:39:41 by ahaddadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdbool.h>
+#ifndef BUILTINS_H
+# define BUILTINS_H
+# include <stdbool.h>
 
 typedef struct s_command	t_command;
 typedef struct s_shellvar	t_shellvar;
@@ -31,3 +33,4 @@ t_shellvar					*envtoll(char **env);
 char						**varstomatrix(t_shellvar *vars);
 char						*getvar(char *key, t_shellvar *vars);
 void						freeenv(t_shellvar *vars);
+#endif
