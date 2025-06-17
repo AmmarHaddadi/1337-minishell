@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../main.h"
-#include "execution.h"
 
 // 0 -> no
 // 1 -> bltn
@@ -64,6 +63,11 @@ int	bin(t_command *cmd, t_shellvar *vars)
 	char	*path;
 	char	**env;
 
+	if (!cmd->args || !cmd->args[0])
+	{
+		updatevar("?", "258", vars, false);
+		exit(258);
+	}
 	if (!setupfd(cmd->redirections))
 	{
 		ft_putstr_fd("can't setup fd\n", STDERR_FILENO);
@@ -79,10 +83,8 @@ int	bin(t_command *cmd, t_shellvar *vars)
 		return (ft_putstr_fd("err env\n", STDERR_FILENO), free(path), exit(127),
 			11);
 	execve(path, cmd->args, env);
-	perror("execution failed");
-	freematrix(env);
-	free(path);
-	exit(126);
+	return (perror("execution failed"), freematrix(env), free(path), exit(126),
+		1337);
 }
 
 int	maestro(t_command *cmd, t_shellvar *vars, int *xt)
