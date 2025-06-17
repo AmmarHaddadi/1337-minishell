@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 08:15:18 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/14 09:47:19 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/17 16:58:00 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,8 @@ char						*replace(char *input, t_shellvar *vars);
 void						len_word(char *str, int *i);
 t_token						*join_token_word(t_token *tokens);
 int							count_files(t_token *tokens);
+int							expand_dollar(char *buffer[2], int tab[2],
+								t_quote *quote, t_shellvar *vars);
+int							len_allocation(char *input, t_shellvar *vars);
 
 #endif
