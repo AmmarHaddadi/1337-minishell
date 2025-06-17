@@ -17,7 +17,6 @@ all: $(OBJS) $(LIBFT)
 
 $(LIBFT):
 	@make -C src/libft
-	@echo [!] compiled libft
 
 %.o : %.c $(HDR)
 	@cc $(CFLAGS) -c $< -o $@
