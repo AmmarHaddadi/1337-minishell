@@ -25,6 +25,7 @@ static bool	conti(char *input, t_command **cmd, t_shellvar *vars)
 	{
 		g_ctrlc = false;
 		free(input);
+		return (true);
 	}
 	add_history(input);
 	*cmd = split_commands_tokens(input, vars);
