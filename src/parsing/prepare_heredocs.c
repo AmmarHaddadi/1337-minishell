@@ -16,18 +16,18 @@ static void	write_fd(int fd, t_redir **redirection, char *creat_in_tmp,
 		t_shellvar *vars)
 {
 	char	*str;
-	int		vld;
+	char	*tmp;
 
-	vld = 0;
-	if ((*redirection)->red_mode == heredoc_expand)
-		vld = 1;
 	str = readline("heredoc> ");
 	while (str && ft_strcmp(str, (*redirection)->filename) != 0)
 	{
-		if (vld == 1)
-			write(fd, str, ft_strlen(str));
-		else
-			write(fd, replace(str, vars), ft_strlen(replace(str, vars)));
+		if ((*redirection)->red_mode != heredoc_expand)
+		{
+			tmp = str;
+			str = replace(tmp, vars);
+			free(tmp);
+		}
+		write(fd, str, ft_strlen(str));
 		write(fd, "\n", 1);
 		free(str);
 		str = readline("heredoc> ");
