@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:23:47 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/14 22:48:44 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:54:33 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_token	*ft_lstnew_token_add_type(void *content, int isword)
 		node->type = TOKEN_HEREDOC;
 	else if (ft_strcmp(content, "|") == 0 && !isword)
 		node->type = TOKEN_PIPE;
+	else if (isword)
+		node->type = TOKEN_WORD_EXPAND_HEREDOC;
 	else
 		node->type = TOKEN_WORD;
 	node->next = NULL;

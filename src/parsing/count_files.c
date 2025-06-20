@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 08:19:21 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/14 09:46:50 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/20 02:13:01 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int	count_files(t_token *tokens)
 	{
 		if (tokens->next != NULL && (tokens->type == TOKEN_REDIR_IN
 				|| tokens->type == TOKEN_REDIR_OUT
-				|| tokens->type == TOKEN_REDIR_APPEND
-				|| tokens->type == TOKEN_HEREDOC)
+				|| tokens->type == TOKEN_REDIR_APPEND)
 			&& tokens->next->type == TOKEN_WORD)
 			count++;
 		tokens = tokens->next;

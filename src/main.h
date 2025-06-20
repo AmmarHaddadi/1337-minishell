@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:02:50 by ahaddadi          #+#    #+#             */
-/*   Updated: 2025/06/17 17:37:10 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:37:08 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef enum red_mode
 	append,
 	in,
 	heredoc,
+	heredoc_expand,
 }						t_red_mode;
 
 typedef struct s_redir
@@ -71,5 +72,5 @@ void					ft_lstadd_back_cmd(t_command **lst, t_command *new);
 t_command				*split_commands_tokens(char *input, t_shellvar *vars);
 bool					all_whitespace(char *input);
 t_token					*tokens(char *input, t_shellvar *vars);
-void					prepare_heredocs(t_command *cmds);
+void					prepare_heredocs(t_command *cmds, t_shellvar *vars);
 #endif

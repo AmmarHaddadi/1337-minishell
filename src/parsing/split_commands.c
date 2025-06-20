@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 09:49:31 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/14 23:35:55 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/20 02:43:21 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ t_command	*split_commands_tokens(char *input, t_shellvar *vars)
 	count = count_pipe(tks);
 	while (count >= 0 && tks)
 		ft_lstadd_back_cmd(&cmds, create_command(&tks, &count));
-	prepare_heredocs(cmds);
+	prepare_heredocs(cmds, vars);
 	free_tokens(tks_head);
 	return (cmds);
 }

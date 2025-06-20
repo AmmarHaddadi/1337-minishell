@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/09 20:40:14 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/14 09:46:44 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/20 02:43:34 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ static void	fill_redirections(t_token **tokens, t_command *cmd)
 	{
 		if (tkn->next)
 		{
+			if (tkn->next->type == TOKEN_WORD_EXPAND_HEREDOC)
+				tkn->type = 4;
 			ft_lstadd_back_redir(&cmd->redirections,
 				ft_lstnew_redir(tkn->next->value, tkn->type));
 			tkn->type = 10;
@@ -77,7 +79,7 @@ static char	**extract_args(t_token *head, int count)
 		return (NULL);
 	while (head && i < count)
 	{
-		if (head->type == TOKEN_WORD)
+		if (head->type == TOKEN_WORD || head->type == TOKEN_WORD_EXPAND_HEREDOC)
 			args[i++] = ft_strdup(head->value);
 		head = head->next;
 	}
