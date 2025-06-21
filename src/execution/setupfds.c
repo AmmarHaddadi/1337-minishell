@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setupfds.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ahaddadi <ahaddadi@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 00:08:27 by ahaddadi          #+#    #+#             */
-/*   Updated: 2025/06/10 00:08:27 by ahaddadi         ###   ########.fr       */
+/*   Updated: 2025/06/21 16:45:22 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../main.h"
@@ -53,7 +53,8 @@ static void	setin(t_redir *redir, char **redfile)
 {
 	while (redir != NULL)
 	{
-		if (redir->red_mode == in || redir->red_mode == heredoc)
+		if (redir->red_mode == in || redir->red_mode == heredoc
+			|| redir->red_mode == heredoc_expand)
 		{
 			*redfile = redir->filename;
 			break ;
