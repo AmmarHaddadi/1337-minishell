@@ -53,28 +53,40 @@ void	updatevar(char *key, char *val, t_shellvar *vars, bool exported)
 	return ;
 }
 
+static void	printtvars(t_shellvar *vars)
+{
+	bubble_sort_shellvars(vars);
+	while (vars != NULL)
+	{
+		if (vars->value && vars->exported == true)
+			printf("declare -x %s=\"%s\"\n", vars->key, vars->value);
+		else if (vars->exported == true)
+			printf("declare -x %s\n", vars->key);
+		vars = vars->next;
+	}
+}
+
 int	export(t_shellvar *vars, t_command *command)
 {
 	char	**e;
+	int		i;
 
-	if (command->args[1] == NULL)
+	i = 1;
+	if (matrixlen(command->args) == 1)
+		return (printtvars(vars), 0);
+	while (command->args[i])
 	{
-		bubble_sort_shellvars(vars);
-		while (vars != NULL)
-		{
-			if (vars->exported == true)
-				printf("declare -x %s=\"%s\"\n", vars->key, vars->value);
-			vars = vars->next;
-		}
-		return (0);
+		e = ft_split(command->args[i], '=');
+		if (!ft_isalpha(e[0][0]) && e[0][0] != '_')
+			return (freematrix(e), 1);
+		if (ft_strchr(command->args[i], '=') && e[1])
+			updatevar(e[0], e[1], vars, true);
+		else if (ft_strchr(command->args[i], '='))
+			updatevar(e[0], "", vars, true);
+		else
+			updatevar(e[0], NULL, vars, true);
+		freematrix(e);
+		i++;
 	}
-	e = ft_split(command->args[1], '=');
-	if (!ft_isalpha(e[0][0]) && e[0][0] != '_')
-		return (freematrix(e), 1);
-	if (ft_strchr(command->args[1], '='))
-		updatevar(e[0], e[1], vars, true);
-	else
-		updatevar(e[0], NULL, vars, true);
-	freematrix(e);
 	return (0);
 }
