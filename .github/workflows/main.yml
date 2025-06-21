@@ -1,0 +1,37 @@
+name: Norme 42 Check
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**.c'
+      - '**.h'
+
+jobs:
+  check-norme:
+    name: Check 42 Norme
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up Python (required for norminette)
+        uses: actions/setup-python@v5.6.0
+        with:
+          python-version: '3.x'
+
+      - name: Install Norminette
+        run: |
+          pip install -U norminette
+
+      - name: Run Norminette
+        run: |
+          if norminette . | grep -q "Error!"; then
+            echo "Norme violations found."
+            exit 1
+          else
+            echo "Norme check passed."
+          fi
+
