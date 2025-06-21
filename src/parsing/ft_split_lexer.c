@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 16:56:24 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/16 16:43:41 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/20 02:45:30 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 static int	is_quote_pair(char *str, int i, int j)
 {
-	return ((str[i] == '"' && str[j - 1] == '"')
-		|| (str[i] == '\'' && str[j - 1] == '\''));
+	if ((str[i - 1] == '"' && str[j] == '"') || (str[i - 1] == '\''
+			&& str[j] == '\''))
+		return (1);
+	return (0);
 }
 
 static int	is_unclosed_quote(char *str, int i, int j)

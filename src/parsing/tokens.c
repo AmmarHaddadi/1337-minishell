@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 12:43:35 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/14 09:53:32 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:47:56 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static int	check_word_after_operator(t_token *tokens)
 		if ((tokens->type == TOKEN_REDIR_OUT || tokens->type == TOKEN_REDIR_IN
 				|| tokens->type == TOKEN_REDIR_APPEND
 				|| tokens->type == TOKEN_HEREDOC) && (tokens->next == NULL
-				|| tokens->next->type != TOKEN_WORD))
+				|| (tokens->next->type != TOKEN_WORD
+					&& tokens->next->type != TOKEN_WORD_EXPAND_HEREDOC)))
 			return (1);
 		tokens = tokens->next;
 	}
@@ -47,12 +48,17 @@ static int	check_word_after_operator(t_token *tokens)
 static void	expand_tokens(t_token *tks, t_shellvar *vars)
 {
 	char	*tmp;
+	t_token	*get_check_heredoc;
 
 	while (tks)
 	{
 		tmp = tks->value;
-		tks->value = replace(tmp, vars);
+		if (get_check_heredoc->type != TOKEN_HEREDOC)
+			tks->value = replace(tmp, vars);
+		else
+			tks->value = skip_sgl_dbl(tmp);
 		free(tmp);
+		get_check_heredoc = tks;
 		tks = tks->next;
 	}
 }

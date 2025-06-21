@@ -6,7 +6,7 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 08:15:18 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/17 16:58:00 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:46:50 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef enum e_token_type
 	TOKEN_HEREDOC,
 	TOKEN_PIPE,
 	TOKEN_WORD,
+	TOKEN_WORD_EXPAND_HEREDOC,
 }							t_token_type;
 
 typedef struct s_token
@@ -54,5 +55,6 @@ int							count_files(t_token *tokens);
 int							expand_dollar(char *buffer[2], int tab[2],
 								t_quote *quote, t_shellvar *vars);
 int							len_allocation(char *input, t_shellvar *vars);
+char						*skip_sgl_dbl(const char *str);
 
 #endif

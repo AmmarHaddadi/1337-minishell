@@ -1,30 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   count_files.c                                      :+:      :+:    :+:   */
+/*   skip_sgl_dbl.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/14 08:19:21 by ssallami          #+#    #+#             */
-/*   Updated: 2025/06/20 02:13:01 by ssallami         ###   ########.fr       */
+/*   Created: 2025/06/20 20:46:04 by ssallami          #+#    #+#             */
+/*   Updated: 2025/06/20 20:47:48 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../main.h"
 
-int	count_files(t_token *tokens)
+char	*skip_sgl_dbl(const char *str)
 {
-	int	count;
+	int		i;
+	int		j;
+	char	*new_str;
+	int		len;
 
-	count = 0;
-	while (tokens != NULL)
+	i = 0;
+	j = 0;
+	len = 0;
+	while (str[len])
+		len++;
+	new_str = malloc(len + 1);
+	if (!new_str)
+		return (NULL);
+	while (str[i])
 	{
-		if (tokens->next != NULL && (tokens->type == TOKEN_REDIR_IN
-				|| tokens->type == TOKEN_REDIR_OUT
-				|| tokens->type == TOKEN_REDIR_APPEND)
-			&& tokens->next->type == TOKEN_WORD)
-			count++;
-		tokens = tokens->next;
+		if (str[i] != '\'' && str[i] != '"')
+			new_str[j++] = str[i];
+		i++;
 	}
-	return (count);
+	new_str[j] = '\0';
+	return (new_str);
 }
