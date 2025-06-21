@@ -18,7 +18,7 @@ typedef struct s_shellvar	t_shellvar;
 
 // builtins
 int							echo(t_command *command);
-int							cd(t_command *command, char *home);
+int							cd(t_command *command, t_shellvar *vars);
 int							pwd(void);
 int							export(t_shellvar *vars, t_command *command);
 int							unset(t_command *command, t_shellvar **vars);

@@ -40,7 +40,7 @@ int	execbltn(t_command *cmd, t_shellvar *vars)
 	if (!my_strcmp("echo", cmd->args[0]))
 		return (echo(cmd));
 	else if (!my_strcmp("cd", cmd->args[0]))
-		return (cd(cmd, getvar("HOME", vars)));
+		return (cd(cmd, vars));
 	else if (!my_strcmp("pwd", cmd->args[0]))
 		return (pwd());
 	else if (!my_strcmp("export", cmd->args[0]))
