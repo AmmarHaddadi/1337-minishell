@@ -78,7 +78,10 @@ int	export(t_shellvar *vars, t_command *command)
 	{
 		e = ft_split(command->args[i], '=');
 		if (!ft_isalpha(e[0][0]) && e[0][0] != '_')
+		{
+			printf("export: '%s': not a valid identifier\n", e[0]);
 			return (freematrix(e), 1);
+		}
 		if (ft_strchr(command->args[i], '=') && e[1])
 			updatevar(e[0], e[1], vars, true);
 		else if (ft_strchr(command->args[i], '='))
