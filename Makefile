@@ -5,9 +5,12 @@ SRC =	src/minishell.c src/signals.c src/utils.c \
 		src/tools/ft_lstadd_back.c src/tools/ft_lstlast.c src/tools/ft_lstnew.c src/tools/ft_lstsize.c src/tools/main-tools.c 
 OBJS = $(SRC:.c=.o)
 LIBFT = src/libft/libft.a
-CFLAGS = -Wall -Wextra -Werror 
+# CFLAGS = -Wall -Wextra -Werror 
+# RDL = $(shell brew --prefix readline)
+# LDFLAGS = -lreadline -L$(RDL)/lib -I$(RDL)/lib
 RDL = $(shell brew --prefix readline)
-LDFLAGS = -lreadline -L$(RDL)/lib -I$(RDL)/lib
+CFLAGS += -Wall -Wextra -Werror -I$(RDL)/include
+LDFLAGS += -L$(RDL)/lib -lreadline
 HDR = src/builtins/builtins.h src/execution/execution.h src/libft/libft.h src/main.h src/parsing/parsing.h src/signals.h 
 NAME = minishell
 
