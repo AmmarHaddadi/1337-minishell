@@ -36,6 +36,8 @@ int	dofork(struct s_maestro ms, int i, t_command *cmd, t_shellvar *vars)
 		return (hndlfrkerr(i, ms.clen, ms.pids, ms.pipes), 1);
 	if (ms.pids[i] == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
+		signal(SIGINT, SIG_DFL);
 		if (i < ms.clen - 1)
 			dup2(ms.pipes[i][1], STDOUT_FILENO);
 		if (i > 0)
