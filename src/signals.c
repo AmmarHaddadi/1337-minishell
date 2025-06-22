@@ -25,7 +25,7 @@ void	handle_ctrlc(int sig)
 
 	(void)sig;
 	g_ctrlc = true;
-	write(STDOUT_FILENO, "\n", 1);
+	write(STDOUT_FILENO, "\n", 2);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
