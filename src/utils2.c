@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ahaddadi <ahaddadi@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/12 01:38:13 by ahaddadi          #+#    #+#             */
-/*   Updated: 2025/06/12 01:38:13 by ahaddadi         ###   ########.fr       */
+/*   Created: 2025/06/23 15:17:08 by ahaddadi          #+#    #+#             */
+/*   Updated: 2025/06/23 15:17:08 by ahaddadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "main.h"
 
-void	handle_ctrlback(int sig)
+// is heredoc fkup ret true
+bool	thatonecase(t_command *cmd)
 {
-	(void)sig;
-}
+	t_redir	*red;
 
-void	rl_replace_line(const char *s, int a);
-
-// ctrl-c
-void	handle_ctrlc(int sig)
-{
-	extern bool	g_ctrlc;
-
-	(void)sig;
-	write(STDOUT_FILENO, "\n", 2);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if (!cmd)
+		return (false);
+	red = cmd->redirections;
+	while (red)
+	{
+		if (red->filename == NULL && (red->red_mode == heredoc
+				|| red->red_mode == heredoc_expand))
+			return (true);
+		red = red->next;
+	}
+	return (false);
 }

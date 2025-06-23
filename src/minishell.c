@@ -6,13 +6,11 @@
 /*   By: ssallami <ssallami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:54:08 by ahaddadi          #+#    #+#             */
-/*   Updated: 2025/06/20 02:41:47 by ssallami         ###   ########.fr       */
+/*   Updated: 2025/06/23 17:25:47 by ssallami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-
-bool		g_ctrlc = false;
 
 static bool	conti(char *input, t_command **cmd, t_shellvar *vars)
 {
@@ -21,14 +19,10 @@ static bool	conti(char *input, t_command **cmd, t_shellvar *vars)
 		free(input);
 		return (true);
 	}
-	if (g_ctrlc == true)
-	{
-		g_ctrlc = false;
-		free(input);
-		return (true);
-	}
 	add_history(input);
 	*cmd = split_commands_tokens(input, vars);
+	if (thatonecase(*cmd))
+		return (free(input), freecmd(*cmd), true);
 	return (false);
 }
 
