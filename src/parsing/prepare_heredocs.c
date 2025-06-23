@@ -15,7 +15,6 @@
 void	handle_heredoc_sigint(int sig)
 {
 	(void)sig;
-	write(1, "\n", 1);
 	exit(130);
 }
 
@@ -52,21 +51,19 @@ static int	handle_heredoc_process(t_redir **redir, char *tmpfile, int fd,
 	pid_t	pid;
 	int		status;
 
+	signal(SIGINT,SIG_IGN);
 	pid = fork();
 	if (pid < 0)
 	{
-		perror("fork");
 		close(fd);
-		unlink(tmpfile);
-		return (-1);
+		return (perror("heredoc fork"), unlink(tmpfile), -1);
 	}
 	else if (pid == 0)
 		write_fd(fd, redir, tmpfile, vars);
-	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, handle_ctrlc);
 	close(fd);
-	if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
+	if (WIFSIGNALED(status) || !WIFEXITED(status) || WEXITSTATUS(status) != 0)
 	{
 		unlink(tmpfile);
 		free(tmpfile);
@@ -116,9 +113,10 @@ static void	write_files_heredoc(t_redir **redirections, int *index,
 			continue ;
 		}
 		if (handle_heredoc_process(&tmp_redirections, tmpfile, fd, vars) < 0)
-			{
-				tmp_redirections->filename = NULL;
-				return ;}
+		{
+			tmp_redirections->filename = NULL;
+			return ;
+		}
 		free(tmp_redirections->filename);
 		tmp_redirections->filename = tmpfile;
 		tmp_redirections = tmp_redirections->next;

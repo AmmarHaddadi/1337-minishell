@@ -73,4 +73,5 @@ t_command				*split_commands_tokens(char *input, t_shellvar *vars);
 bool					all_whitespace(char *input);
 t_token					*tokens(char *input, t_shellvar *vars);
 void					prepare_heredocs(t_command *cmds, t_shellvar *vars);
+bool					thatonecase(t_command *cmd);
 #endif
