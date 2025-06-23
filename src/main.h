@@ -19,11 +19,11 @@
 # include "parsing/parsing.h"
 # include "signals.h"
 # include <fcntl.h>
-# include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -74,4 +74,7 @@ bool					all_whitespace(char *input);
 t_token					*tokens(char *input, t_shellvar *vars);
 void					prepare_heredocs(t_command *cmds, t_shellvar *vars);
 bool					thatonecase(t_command *cmd);
+int						handle_heredoc_process(t_redir **redir, char *tmpfile,
+							int fd, t_shellvar *vars);
+
 #endif
