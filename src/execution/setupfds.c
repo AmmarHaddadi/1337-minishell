@@ -55,10 +55,7 @@ static void	setin(t_redir *redir, char **redfile)
 	{
 		if (redir->red_mode == in || redir->red_mode == heredoc
 			|| redir->red_mode == heredoc_expand)
-		{
 			*redfile = redir->filename;
-			break ;
-		}
 		redir = redir->next;
 	}
 }
