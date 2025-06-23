@@ -30,39 +30,45 @@ static char	*generate_tmpfile(t_redir *redir, int *index)
 	return (tmpfile);
 }
 
-static int	check_heredoc(t_redir *tmp_redirections)
+// 0 -> conti to next
+// 1 -> return
+static int	hrdcstp(t_redir *tmp_red, int *index, t_shellvar *vars)
 {
-	return (tmp_redirections && (tmp_redirections->red_mode == heredoc
-			|| tmp_redirections->red_mode == heredoc_expand));
+	int		fd;
+	char	*tmpfile;
+
+	if (!(tmp_red->red_mode == heredoc || tmp_red->red_mode == heredoc_expand))
+		return (0);
+	tmpfile = generate_tmpfile(tmp_red, index);
+	fd = open(tmpfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+	{
+		perror("open");
+		free(tmpfile);
+		tmp_red = tmp_red->next;
+		return (0);
+	}
+	if (handle_heredoc_process(&tmp_red, tmpfile, fd, vars) < 0)
+	{
+		tmp_red->filename = NULL;
+		return (1);
+	}
+	free(tmp_red->filename);
+	tmp_red->filename = tmpfile;
+	return (0);
 }
 
 static void	write_files_heredoc(t_redir **redirections, int *index,
 		t_shellvar *vars)
 {
-	t_redir	*tmp_redirections;
-	char	*tmpfile;
-	int		fd;
+	t_redir	*tmp_red;
 
-	tmp_redirections = *redirections;
-	while (check_heredoc(tmp_redirections))
+	tmp_red = *redirections;
+	while (tmp_red)
 	{
-		tmpfile = generate_tmpfile(tmp_redirections, index);
-		fd = open(tmpfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd == -1)
-		{
-			perror("open");
-			free(tmpfile);
-			tmp_redirections = tmp_redirections->next;
-			continue ;
-		}
-		if (handle_heredoc_process(&tmp_redirections, tmpfile, fd, vars) < 0)
-		{
-			tmp_redirections->filename = NULL;
-			return ;
-		}
-		free(tmp_redirections->filename);
-		tmp_redirections->filename = tmpfile;
-		tmp_redirections = tmp_redirections->next;
+		if (hrdcstp(tmp_red, index, vars) == 1)
+			break ;
+		tmp_red = tmp_red->next;
 	}
 }
 
